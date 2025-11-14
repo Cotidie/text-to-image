@@ -22,10 +22,10 @@ def _setup_pipeline(model: str):
 class ImageGenerator:
     """Handles image generation requests to Stable Diffusion model."""
     
-    def __init__(self):
+    def __init__(self, model: str):
         global _pipe
         if _pipe is None:
-            _pipe = _setup_pipeline()
+            _pipe = _setup_pipeline(model)
 
         self.pipe = _pipe
     
