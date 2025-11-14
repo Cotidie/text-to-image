@@ -5,7 +5,6 @@ from flask import Flask
 from config import Config
 from controller.image import image_blueprint
 from controller.healthcheck import healthcheck_blueprint
-from model.generator import ImageGenerator
 
 
 def create_app() -> Flask:
@@ -17,12 +16,13 @@ def create_app() -> Flask:
 
 
 def main():
+    config = Config()
     app = create_app()
     
-    print(f"Starting Text-to-Image Generation Server on port 5000...")
+    print(f"Starting Text-to-Image Generation Server on port 5006...")
     print(f"Model: {config.model}")
     
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5006)
 
 
 if __name__ == "__main__":

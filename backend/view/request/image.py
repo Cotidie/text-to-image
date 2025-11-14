@@ -1,15 +1,13 @@
 """Request models for image generation."""
 from dataclasses import dataclass
 from typing import Optional
-from view.interface import Parsable
-
-from flask import request
+from view.interface import Parsable, Validatable
 
 
 @dataclass
-class GenerateImage(Parsable):
+class GenerateImage(Parsable, Validatable):
     """Request model for image generation."""
-    prompt: str
+    prompt: str = ""
     width: Optional[int] = 512
     height: Optional[int] = 512
     steps: Optional[int] = 8
@@ -25,3 +23,7 @@ class GenerateImage(Parsable):
         self.width = data.get("width", self.width)
         self.height = data.get("height", self.height)
         self.steps = data.get("steps", self.steps)
+
+    def validate(self) -> None:
+        if not self.prompt:
+            raise ValueError("Prompt cannot be empty.")

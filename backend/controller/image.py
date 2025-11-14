@@ -17,10 +17,11 @@ def generate_image():
         Flask response with generated image or error
     """
     try:
-        
         req = RequestParser.parse_generate_image(request)
+        req.validate()
 
-        image = ImageGenerator().generate(prompt=req.prompt)
+        data = req.data()
+        image = ImageGenerator().generate(prompt=data.prompt)
         image_io = io.BytesIO()
         image.save(image_io, 'PNG', quality=100)
         image_io.seek(0)

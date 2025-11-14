@@ -1,0 +1,9 @@
+POST http://localhost:5006/image/generate  
+Content-Type: application/json
+
+{
+  "prompt": "A futuristic cityscape at sunset",
+  "width": 800,
+  "height": 600,
+  "steps": 10
+}

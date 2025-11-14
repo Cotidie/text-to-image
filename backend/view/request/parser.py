@@ -9,7 +9,7 @@ class RequestParser:
         """
         Parse a GenerateImage request from a dictionary.
         """
-        generate_image = GenerateImage()
+        generate_image = GenerateImage("")
         generate_image.from_dict(request.get_json())
-        
+
         return Request(generate_image)

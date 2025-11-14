@@ -1,7 +1,7 @@
-from typing import TypeVar, Generic
-from view.interface import Parsable
+from typing import TypeVar, Generic, Union
+from view.interface import Parsable, Validatable
 
-T = TypeVar('T', bound=Parsable)
+T = TypeVar('T', bound=Union[Parsable, Validatable])
 
 class Request(Generic[T]):
     """
@@ -17,15 +17,22 @@ class Request(Generic[T]):
         Get HTTP method for this request.
         """
         return self._method
-
-    def parse(self, data: str) -> T:
-        """
-        Get request data.
-        """
-        ...
     
     def data(self) -> T:
         """
         Get request data.
         """
         return self._data
+    
+    def parse(self, data: str) -> T:
+        """
+        Get request data.
+        """
+        ...
+
+    def validate(self) -> None:
+        """
+        Validate request data.
+        """
+        if self._data:
+            self._data.validate()
