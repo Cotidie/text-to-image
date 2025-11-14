@@ -3,9 +3,9 @@ import io
 
 from flask import Flask, request, send_file
 
-from .config import Config
-from .generator import ImageGenerator
-from .response.payload import GenerateImageResponse
+from config import Config
+from model.generator import ImageGenerator
+from view.response.factory import ResponseFactory
 
 class ImageGenerationServer:
     """Flask application for the image generation REST API."""

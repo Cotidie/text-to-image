@@ -4,8 +4,7 @@ import base64
 from PIL import Image
 from dataclasses import dataclass
 
-from .base import Response
-from ..interface import Jsonifiable
+from model.interface import Jsonifiable
 
 
 @dataclass

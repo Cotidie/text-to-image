@@ -5,7 +5,7 @@ from PIL import Image
 
 import torch
 
-from .config import Config
+from config import Config
 
 
 class ImageGenerator:
