@@ -11,5 +11,16 @@ class HttpMethod(Enum):
 @dataclass
 class Endpoint:
     path: str
-    methods: List[HttpMethod]
+    _methods: List[HttpMethod]
 
+    def methods(self) -> List[str]:
+        return [method.value for method in self._methods]
+
+GENERATE_IMAGE = Endpoint(
+    path="/generate",
+    _methods=[HttpMethod.POST]
+)
+PING = Endpoint(
+    path="/ping",
+    _methods=[HttpMethod.GET]
+)

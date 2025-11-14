@@ -11,12 +11,6 @@ class ImageGenerationServer:
     """Flask application for the image generation REST API."""
     
     def __init__(self, config: Config):
-        """
-        Initialize the Flask server.
-        
-        Args:
-            config: Configuration object
-        """
         self.config = config
         self.generator = ImageGenerator(config)
         self.app = Flask(__name__)

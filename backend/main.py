@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-
-from backend import Config, ImageGenerationServer
+from config import Config
+from server import ImageGenerationServer    
 
 
 def main() -> None:

@@ -9,7 +9,7 @@ from model.interface import Jsonifiable
 
 @dataclass
 class GenerateImage(Jsonifiable):
-    """Data container for image information."""
+    """Data payload for image generation endpoint"""
     image: Image.Image
     format: str = "PNG"
 
