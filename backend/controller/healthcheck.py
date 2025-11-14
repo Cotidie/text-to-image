@@ -1,11 +1,12 @@
 """Health check controller."""
 from flask import Blueprint
+from endpoint import PING
 
 
-healthcheck_bp = Blueprint('healthcheck', __name__)
+healthcheck_blueprint = Blueprint('healthcheck', __name__)
 
 
-@healthcheck_bp.route('/ping', methods=['GET'])
+@healthcheck_blueprint.route(PING.path, methods=PING.methods())
 def ping():
     """
     Health check endpoint.

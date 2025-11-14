@@ -3,8 +3,8 @@
 from flask import Flask
 
 from config import Config
-from controller.image import image_bp
-from controller.healthcheck import healthcheck_bp
+from controller.image import image_blueprint
+from controller.healthcheck import healthcheck_blueprint
 from model.generator import ImageGenerator
 
 
@@ -12,8 +12,8 @@ def create_app(config: Config) -> Flask:
     """Create and configure Flask application."""
     app = Flask(__name__)
     app.config['IMAGE_GENERATOR'] = ImageGenerator(config)
-    app.register_blueprint(image_bp)
-    app.register_blueprint(healthcheck_bp)
+    app.register_blueprint(image_blueprint)
+    app.register_blueprint(healthcheck_blueprint)
     return app
 
 
