@@ -8,7 +8,7 @@ from endpoint import GENERATE_IMAGE
 image_blueprint = Blueprint('image', __name__, url_prefix='/image')
 
 
-@image_blueprint.route(GENERATE_IMAGE.path, methods=GENERATE_IMAGE.methods())
+@image_blueprint.route(GENERATE_IMAGE.path, methods=GENERATE_IMAGE.methods)
 def generate_image():
     """
     Handle image generation requests.
