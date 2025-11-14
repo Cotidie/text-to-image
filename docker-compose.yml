@@ -1,0 +1,32 @@
+services:
+  sd-turbo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sd-turbo:pytorch
+    container_name: sd-turbo-server
+    
+    # GPU support
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    
+    ports:
+      - "5000:5000"
+    
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - MODEL_NAME=stabilityai/sd-turbo
+    
+    volumes:
+      - ./model:/app/cache
+    
+    restart: unless-stopped
+    # Interactive bash session
+    stdin_open: true
+    tty: true
+    command: /bin/bash

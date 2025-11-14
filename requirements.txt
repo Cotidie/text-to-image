@@ -1,0 +1,10 @@
+# ML libraries
+diffusers>=0.24.0
+transformers>=4.36.0
+accelerate>=0.25.0
+
+# Image processing
+Pillow>=10.1.0
+
+# Web server
+Flask>=3.0.0
