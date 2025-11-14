@@ -19,7 +19,7 @@ def generate_image():
     try:
         
         req = RequestParser.parse_generate_image(request)
-        
+
         image = ImageGenerator().generate(prompt=req.prompt)
         image_io = io.BytesIO()
         image.save(image_io, 'PNG', quality=100)

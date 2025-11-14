@@ -8,18 +8,16 @@ from controller.healthcheck import healthcheck_blueprint
 from model.generator import ImageGenerator
 
 
-def create_app(config: Config) -> Flask:
+def create_app() -> Flask:
     """Create and configure Flask application."""
     app = Flask(__name__)
-    app.config['IMAGE_GENERATOR'] = ImageGenerator(config)
     app.register_blueprint(image_blueprint)
     app.register_blueprint(healthcheck_blueprint)
     return app
 
 
 def main():
-    config = Config()
-    app = create_app(config)
+    app = create_app()
     
     print(f"Starting Text-to-Image Generation Server on port 5000...")
     print(f"Model: {config.model}")

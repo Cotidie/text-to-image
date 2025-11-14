@@ -5,14 +5,13 @@ from PIL import Image
 
 import torch
 
-from config import Config
-
+from model.generate_options import GenerateParameters, GenerateOption
 
 _pipe: StableDiffusionPipeline = None
 
-def _setup_pipeline(self):
+def _setup_pipeline(model: str):
     pipe = AutoPipelineForText2Image.from_pretrained(
-        self.config.model, 
+        model, 
         torch_dtype=torch.float16, 
         variant="fp16"
     )
@@ -23,19 +22,24 @@ def _setup_pipeline(self):
 class ImageGenerator:
     """Handles image generation requests to Stable Diffusion model."""
     
-    def __init__(self, config: Config = Config()):
+    def __init__(self):
         global _pipe
         if _pipe is None:
             _pipe = _setup_pipeline()
 
-        self.config: Config = config
         self.pipe = _pipe
     
-    def generate(self, prompt: str) -> Image:
+    def generate(self, prompt: str, *options: GenerateOption) -> Image:
+        params = GenerateParameters(prompt=prompt)
+        for option in options:
+            option(params)
+        
         return self.pipe(
-            prompt=prompt, 
-            num_inference_steps=8, 
-            guidance_scale=0.0
+            prompt=params.prompt, 
+            num_inference_steps=params.steps, 
+            guidance_scale=0.0,
+            width=params.width,
+            height=params.height
         ).images[0]
 
 
