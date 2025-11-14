@@ -1,9 +1,9 @@
-"""Image generation controller."""
 import io
 
-from flask import Blueprint, send_file
-from backend.view.request.image import GenerateImageRequest
+from flask import Blueprint, request, send_file
 from endpoint import GENERATE_IMAGE
+from model.generator import ImageGenerator
+from view.request.parser import RequestParser
 
 image_blueprint = Blueprint('image', __name__, url_prefix='/image')
 
@@ -17,12 +17,10 @@ def generate_image():
         Flask response with generated image or error
     """
     try:
-        from flask import current_app
-        generator = current_app.config['IMAGE_GENERATOR']
         
-        req = GenerateImageRequest.from_flask_request()
+        req = RequestParser.parse_generate_image(request)
         
-        image = generator.generate(prompt=req.prompt)
+        image = ImageGenerator().generate(prompt=req.prompt)
         image_io = io.BytesIO()
         image.save(image_io, 'PNG', quality=100)
         image_io.seek(0)
