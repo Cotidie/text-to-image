@@ -3,7 +3,7 @@ from config import Config
 from server import ImageGenerationServer    
 
 
-def main() -> None:
+def main():
     try:
         config = Config()
         server = ImageGenerationServer(config)

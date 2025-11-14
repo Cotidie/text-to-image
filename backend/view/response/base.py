@@ -1,7 +1,7 @@
 from typing import TypeVar, Generic
 from flask import jsonify
 
-from model.interface import Jsonifiable
+from view.interface import Jsonifiable
 
 T = TypeVar('T', bound=Jsonifiable)
 

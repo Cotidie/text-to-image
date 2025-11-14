@@ -3,4 +3,4 @@ class Jsonifiable:
         """
         Convert the object to a JSON-serializable dictionary.
         """
-        ...
+        raise NotImplementedError
