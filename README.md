@@ -1,12 +1,22 @@
-# Text-to-Image Generation Server
+# Text-to-Image Generation
 
-A lightweight Flask REST API for generating images from text prompts using Stability AI's SD-Turbo model.
+A local Flask REST API for generating images from text prompts using Stability AI's SD-Turbo model, **locally**.
 
 ## Features
 - Fast image generation from text prompts
 - GPU-accelerated inference with CUDA support
 - Docker containerized deployment
 - MVC architecture for clean and scalable backend structure
+
+## Structure
+![mvc-pattern](.images/readme-mvc-pattern.png)  
+```
+backend/
+├── controller/    # Route definitions
+├── model/         # Image generation logic
+└── view/          # Request/response models
+```
+
 
 ## Tech Stack
 - **Model**: Stable Diffusion Turbo (stabilityai/sd-turbo)
@@ -48,14 +58,6 @@ curl "http://localhost:5000/image/generate?prompt=a+cat+on+a+skateboard" \
 ### Health Check
 ```bash
 curl http://localhost:5000/ping
-```
-
-## Project Structure
-```
-backend/
-├── controller/    # Route definitions
-├── model/         # Image generation logic
-└── view/          # Request/response models
 ```
 
 ## License
