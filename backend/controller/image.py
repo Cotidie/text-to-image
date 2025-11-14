@@ -11,12 +11,7 @@ image_blueprint = Blueprint('image', __name__, url_prefix='/image')
 
 @image_blueprint.route(GENERATE_IMAGE.path, methods=GENERATE_IMAGE.methods)
 def generate_image():
-    """
-    Handle image generation requests.
-    
-    Returns:
-        Flask response with generated image or error
-    """
+    """Handle image generation requests."""
     try:
         req = RequestParser.parse_generate_image(request)
         req.validate()
