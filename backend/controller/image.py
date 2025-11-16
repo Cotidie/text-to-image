@@ -3,7 +3,6 @@ import io
 from flask import Blueprint, request, send_file
 from model.generator import ImageGenerator
 from view.request.parser import RequestParser
-from config import Config
 
 image_blueprint = Blueprint('image', __name__, url_prefix='/image')
 
@@ -15,9 +14,7 @@ def generate_image():
         req.validate()
 
         data = req.data()
-        image = ImageGenerator(
-            model=Config.model
-        ).generate(prompt=data.prompt)
+        image = ImageGenerator.generate(prompt=data.prompt)
 
         image_io = io.BytesIO()
         image.save(image_io, data.format, quality=100)
@@ -33,4 +30,5 @@ def generate_image():
     except Exception as e:
         print(f"Error generating image: {e}")
         return str(e), 500
+
 

@@ -8,7 +8,7 @@ class RequestParser:
     @staticmethod
     def generate_image(request: FlaskRequest) -> Request[GenerateImage]:
         """
-        Parse a GenerateImage request from a dictionary.
+        Parse a GenerateImage request from a flask request.
         """
         generate_image = GenerateImage("")
         generate_image.from_dict(request.get_json(force=True))
