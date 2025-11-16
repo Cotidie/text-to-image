@@ -12,7 +12,7 @@ image_blueprint = Blueprint('image', __name__, url_prefix='/image')
 def generate_image():
     """Handle image generation requests."""
     try:
-        req = RequestParser.parse_generate_image(request)
+        req = RequestParser.generate_image(request)
         req.validate()
 
         data = req.data()
@@ -21,14 +21,14 @@ def generate_image():
         ).generate(prompt=data.prompt)
 
         image_io = io.BytesIO()
-        image.save(image_io, 'PNG', quality=100)
+        image.save(image_io, data.format, quality=100)
         image_io.seek(0)
         
         return send_file(
             image_io,
-            mimetype='image/png',
+            mimetype=f'image/{data.format}',
             as_attachment=True,
-            download_name='generated_image.png'
+            download_name=f'generated_image.{data.format}'
         )
     
     except ValueError as e:
