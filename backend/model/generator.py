@@ -3,25 +3,23 @@ from diffusers import AutoPipelineForText2Image, StableDiffusionPipeline
 from PIL import Image
 import torch
 
-from model.generator_option import GenerateParameters, GenerateOption
-
+from model.generator_option import GenerateParameters, GenerateOption 
 
 class ImageGenerator:
     """Singleton class for handling image generation with Stable Diffusion model."""
     
-    _pipes: dict[str, StableDiffusionPipeline] = {}
+    _pipe: StableDiffusionPipeline = None
 
     @classmethod
     def _get_pipeline(cls, model: str) -> StableDiffusionPipeline:
-        if model not in cls._pipes:
-            cls._pipes[model] = AutoPipelineForText2Image.from_pretrained(
+        if cls._pipe is None:
+            cls._pipe = AutoPipelineForText2Image.from_pretrained(
                 model,
                 torch_dtype=torch.float16,
                 variant="fp16"
-            )
-            cls._pipes[model].to("cuda")
+            ).to("cuda")
         
-        return cls._pipes[model]
+        return cls._pipe
     
     @staticmethod
     def generate(prompt: str, *options: GenerateOption) -> Image:
@@ -48,3 +46,10 @@ class ImageGenerator:
             width=params.width,
             height=params.height
         ).images[0]
+
+if __name__ == "__main__":
+    # Simple test
+    img = ImageGenerator.generate(
+        "A fantasy landscape, trending on artstation",
+    )
+    ImageGenerator._pipe.save_pretrained("./model/sdxl-turbo")

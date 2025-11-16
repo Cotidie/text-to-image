@@ -2,6 +2,7 @@ import io
 
 from flask import Blueprint, request, send_file
 from model.generator import ImageGenerator
+import model.generator_option as Options 
 from view.request.parser import RequestParser
 
 image_blueprint = Blueprint('image', __name__, url_prefix='/image')
@@ -14,7 +15,11 @@ def generate_image():
         req.validate()
 
         data = req.data()
-        image = ImageGenerator.generate(prompt=data.prompt)
+        image = ImageGenerator.generate(
+            data.prompt,
+            Options.with_steps(data.steps),
+            Options.with_size(data.width, data.height),
+        )
 
         image_io = io.BytesIO()
         image.save(image_io, data.format, quality=100)
@@ -23,7 +28,7 @@ def generate_image():
         return send_file(
             image_io,
             mimetype=f'image/{data.format}',
-            as_attachment=True,
+            as_attachment=False,
             download_name=f'generated_image.{data.format}'
         )
     

@@ -24,7 +24,6 @@ def with_size(width: int, height: int) -> GenerateOption:
         params.height = height
     return apply
 
-
 def with_steps(steps: int) -> GenerateOption:
     def apply(params: GenerateParameters):
         params.steps = steps
