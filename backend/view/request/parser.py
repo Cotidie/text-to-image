@@ -1,6 +1,7 @@
 from view.request.image import GenerateImage
 from view.request.base import Request
 from flask import Request as FlaskRequest
+
 class RequestParser:
     """Parser for request models."""
     
