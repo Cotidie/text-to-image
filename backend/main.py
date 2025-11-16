@@ -21,7 +21,7 @@ def main():
     app = create_app()
     
     print(f"Starting Text-to-Image Generation Server on port 5006...")
-    print(f"Model: {Config.model}")
+    print(f"Model: {Config.DEFAULT_MODEL}")
     
     app.run(host="0.0.0.0", port=5006)
 

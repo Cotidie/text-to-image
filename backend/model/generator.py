@@ -3,26 +3,25 @@ from diffusers import AutoPipelineForText2Image, StableDiffusionPipeline
 from PIL import Image
 import torch
 
-from config import Config
 from model.generator_option import GenerateParameters, GenerateOption
 
 
 class ImageGenerator:
     """Singleton class for handling image generation with Stable Diffusion model."""
     
-    _pipe: StableDiffusionPipeline = None
+    _pipes: dict[str, StableDiffusionPipeline] = {}
 
     @classmethod
-    def _get_pipeline(cls) -> StableDiffusionPipeline:
-        if cls._pipe is None:
-            cls._pipe = AutoPipelineForText2Image.from_pretrained(
-                Config.model,
+    def _get_pipeline(cls, model: str) -> StableDiffusionPipeline:
+        if model not in cls._pipes:
+            cls._pipes[model] = AutoPipelineForText2Image.from_pretrained(
+                model,
                 torch_dtype=torch.float16,
                 variant="fp16"
             )
-            cls._pipe.to("cuda")
+            cls._pipes[model].to("cuda")
         
-        return cls._pipe
+        return cls._pipes[model]
     
     @staticmethod
     def generate(prompt: str, *options: GenerateOption) -> Image:
@@ -40,7 +39,7 @@ class ImageGenerator:
         for option in options:
             option(params)
         
-        pipe = ImageGenerator._get_pipeline()
+        pipe = ImageGenerator._get_pipeline(params.model)
         
         return pipe(
             prompt=params.prompt,
@@ -49,5 +48,3 @@ class ImageGenerator:
             width=params.width,
             height=params.height
         ).images[0]
-
-ImageGenerator._get_pipeline()  # Preload pipeline at module load time
