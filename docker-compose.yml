@@ -16,7 +16,7 @@ services:
               capabilities: [gpu]
     
     ports:
-      - "5000:5000"
+      - "5006:5006"
     
     environment:
       - CUDA_VISIBLE_DEVICES=0
@@ -26,7 +26,3 @@ services:
       - ./model:/app/cache
     
     restart: unless-stopped
-    # Interactive bash session
-    stdin_open: true
-    tty: true
-    command: /bin/bash

@@ -4,7 +4,7 @@ from PIL import Image
 import torch
 
 from config import Config
-from model.generate_options import GenerateParameters, GenerateOption
+from model.generator_option import GenerateParameters, GenerateOption
 
 
 class ImageGenerator:
@@ -17,10 +17,11 @@ class ImageGenerator:
         if cls._pipe is None:
             cls._pipe = AutoPipelineForText2Image.from_pretrained(
                 Config.model,
-                dtype=torch.float16,
+                torch_dtype=torch.float16,
                 variant="fp16"
             )
             cls._pipe.to("cuda")
+        
         return cls._pipe
     
     @staticmethod
