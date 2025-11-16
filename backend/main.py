@@ -19,11 +19,12 @@ def create_app() -> Flask:
 
 def main():
     app = create_app()
+    Config.load_from_env()
     
-    print(f"Starting Text-to-Image Generation Server on port 5006...")
+    print(f"Starting Text-to-Image Generation Server on port {Config.PORT}...")
     print(f"Model: {Config.DEFAULT_MODEL}")
     
-    app.run(host="0.0.0.0", port=5006)
+    app.run(host="0.0.0.0", port=Config.PORT)
 
 
 if __name__ == "__main__":
