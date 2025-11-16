@@ -9,12 +9,12 @@ A simple Flask REST API for generating images from text prompts using Stability 
 - MVC architecture with Flask blueprints
 
 ## Environment
-- **OS**: Ubuntu 24.04
+- **Host OS**: Ubuntu 24.04
 - **GPU**: NVIDIA RTX 4080 SUPER 16GB
-- **Python**: 3.13
-- **Library**: Flask, Diffusers
+- **Python**: 3.11
+- **Library**: Flask, HuggingFace
 - **Models**: Stable Diffusion (SD-Turbo, SDXL-Turbo)
-- **Container**: Docker with CUDA support
+- **Container**: pytorch with CUDA support
 
 ## Project Structure
 ![mvc-pattern](.images/readme-mvc-pattern.png)  

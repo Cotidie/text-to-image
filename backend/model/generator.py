@@ -49,3 +49,5 @@ class ImageGenerator:
             width=params.width,
             height=params.height
         ).images[0]
+
+ImageGenerator._get_pipeline()  # Preload pipeline at module load time

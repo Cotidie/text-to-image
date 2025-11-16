@@ -16,11 +16,10 @@ services:
               capabilities: [gpu]
     
     ports:
-      - "5006:5006"
+      - "${PORT}:${PORT}"
     
-    environment:
-      - CUDA_VISIBLE_DEVICES=0
-      - MODEL_NAME=stabilityai/sd-turbo
+    env_file:
+      - .env
     
     volumes:
       - ./model:/app/cache
