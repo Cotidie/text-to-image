@@ -12,7 +12,7 @@ _pipe: StableDiffusionPipeline = None
 def _setup_pipeline(model: str):
     pipe = AutoPipelineForText2Image.from_pretrained(
         model, 
-        torch_dtype=torch.float16, 
+        dtype=torch.float16, 
         variant="fp16"
     )
     pipe.to("cuda")
@@ -29,6 +29,7 @@ class ImageGenerator:
 
         self.pipe = _pipe
     
+    
     def generate(self, prompt: str, *options: GenerateOption) -> Image:
         params = GenerateParameters(prompt=prompt)
         for option in options:
@@ -41,9 +42,3 @@ class ImageGenerator:
             width=params.width,
             height=params.height
         ).images[0]
-
-
-if __name__ == "__main__":
-    generator = ImageGenerator()
-    result = generator.generate("hello world")
-    result.show()

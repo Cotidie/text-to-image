@@ -1,12 +1,11 @@
 import io
 
-from flask import Blueprint, request, send_file, current_app as app
+from flask import Blueprint, request, send_file
 from model.generator import ImageGenerator
 from view.request.parser import RequestParser
-from config import ConfigKey
+from config import Config
 
 image_blueprint = Blueprint('image', __name__, url_prefix='/image')
-
 
 @image_blueprint.route("/generate", methods=["POST"])
 def generate_image():
@@ -17,7 +16,7 @@ def generate_image():
 
         data = req.data()
         image = ImageGenerator(
-            model=app.config[ConfigKey.MODEL]
+            model=Config.model
         ).generate(prompt=data.prompt)
 
         image_io = io.BytesIO()
@@ -31,9 +30,7 @@ def generate_image():
             download_name=f'generated_image.{data.format}'
         )
     
-    except ValueError as e:
-        return str(e), 400
     except Exception as e:
         print(f"Error generating image: {e}")
-        return "Error occurred", 500
+        return str(e), 500
 

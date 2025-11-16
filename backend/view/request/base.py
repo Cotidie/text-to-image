@@ -1,38 +1,27 @@
+from abc import ABC, abstractmethod
 from typing import TypeVar, Generic, Union
 from view.interface import Parsable, Validatable
 
 T = TypeVar('T', bound=Union[Parsable, Validatable])
 
-class Request(Generic[T]):
+class Request(ABC, Generic[T]):
     """
     Generic request interface that all request types must implement.
     """
 
-    def __init__(self, data: T=None, method: str=""):
+    def __init__(self, data: T = None, method: str = ""):
         self._data: T = data
-        self._method: str= method
+        self._method: str = method
 
     def method(self) -> str:
-        """
-        Get HTTP method for this request.
-        """
+        """Get HTTP method for this request."""
         return self._method
     
     def data(self) -> T:
-        """
-        Get request data.
-        """
+        """Get request data."""
         return self._data
-    
-    def parse(self, data: str) -> T:
-        """
-        Get request data.
-        """
-        ...
 
     def validate(self) -> None:
-        """
-        Validate request data.
-        """
+        """Validate request data."""
         if self._data:
             self._data.validate()

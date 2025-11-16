@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "prompt": "A futuristic cityscape at sunset",
-  "width": 800,
-  "height": 600,
-  "steps": 10
+  "width": 512,
+  "height": 512,
+  "steps": 100
 }

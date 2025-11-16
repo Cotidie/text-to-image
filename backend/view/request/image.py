@@ -1,4 +1,3 @@
-"""Request models for image generation."""
 from dataclasses import dataclass
 from typing import Optional
 from view.interface import Parsable, Validatable

@@ -1,6 +1,6 @@
 # Text-to-Image Generation
 
-A local Flask REST API for generating images from text prompts using Stability AI's SD-Turbo model, **locally**.
+A simple Flask REST API for generating images from text prompts using Stability AI's SD-Turbo model, **locally**.
 
 ## Features
 - Fast image generation from text prompts

@@ -7,14 +7,7 @@ class Model(str, Enum):
     SD_TURBO = "stabilityai/sd-turbo"
     SDXL_TURBO = "stabilityai/sdxl-turbo"
 
-class ConfigKey(str, Enum):
-    MODEL = "model"
-    DEFAULT_WIDTH = "default_width"
-    DEFAULT_HEIGHT = "default_height"
-    DEFAULT_STEPS = "default_steps"
-    TIMEOUT = "timeout"
 
-@dataclass
 class Config:
     """Configuration settings for the image generation service."""
     
