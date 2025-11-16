@@ -1,7 +1,6 @@
 import io
 
 from flask import Blueprint, request, send_file, current_app as app
-from endpoint import GENERATE_IMAGE
 from model.generator import ImageGenerator
 from view.request.parser import RequestParser
 from config import ConfigKey
@@ -9,7 +8,7 @@ from config import ConfigKey
 image_blueprint = Blueprint('image', __name__, url_prefix='/image')
 
 
-@image_blueprint.route(GENERATE_IMAGE.path, methods=GENERATE_IMAGE.methods)
+@image_blueprint.route("/generate", methods=["POST"])
 def generate_image():
     """Handle image generation requests."""
     try:

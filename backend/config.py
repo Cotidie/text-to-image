@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 
-class Model(Enum):
+class Model(str, Enum):
     """Supported text-to-image model names."""
     SD_TURBO = "stabilityai/sd-turbo"
     SDXL_TURBO = "stabilityai/sdxl-turbo"
@@ -13,7 +13,7 @@ class ConfigKey(str, Enum):
     DEFAULT_HEIGHT = "default_height"
     DEFAULT_STEPS = "default_steps"
     TIMEOUT = "timeout"
-    
+
 @dataclass
 class Config:
     """Configuration settings for the image generation service."""
