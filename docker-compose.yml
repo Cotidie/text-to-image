@@ -22,6 +22,10 @@ services:
       - .env
     
     volumes:
-      - ./model:${HF_HOME}
+      - model-cache:${HF_HOME}
+      - ./model:/app/models
     
     restart: unless-stopped
+
+volumes:
+  model-cache:
