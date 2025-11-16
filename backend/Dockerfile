@@ -10,6 +10,7 @@ COPY . .
 
 ENV PYTHONUNBUFFERED=1
 ENV HF_HOME=/app/cache
+ENV PORT=5555
 
 RUN mkdir -p /app/cache && \
     useradd -m -u 1000 make && \
@@ -17,6 +18,6 @@ RUN mkdir -p /app/cache && \
 
 USER make
 
-EXPOSE 5000
+EXPOSE 5555
 
 CMD ["python", "main.py"]

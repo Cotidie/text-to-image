@@ -12,7 +12,7 @@ class Config:
     """Configuration settings for the image generation service."""
     
     DEFAULT_MODEL: str  = Model.SD_TURBO.value    # which SD model to use
-    PORT: int           = 5006                    # port number for flask 
+    PORT: int           = 5555                    # port number for flask 
 
     @classmethod
     def load_from_env(cls) -> None:
