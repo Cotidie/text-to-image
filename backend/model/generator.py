@@ -1,28 +1,28 @@
 """Image generation logic"""
-from diffusers import AutoPipelineForText2Image, StableDiffusionPipeline
+from diffusers import StableDiffusionPipeline
 from PIL import Image
 import torch
 
 from model.generator_option import GenerateParameters, GenerateOption 
+from config import Config
 
-class ImageGenerator:
-    """Singleton class for handling image generation with Stable Diffusion model."""
-    
-    _pipe: StableDiffusionPipeline = None
 
-    @classmethod
-    def _get_pipeline(cls, model: str) -> StableDiffusionPipeline:
-        if cls._pipe is None:
-            cls._pipe = AutoPipelineForText2Image.from_pretrained(
-                model,
-                torch_dtype=torch.float16,
-                variant="fp16"
-            ).to("cuda")
-        
-        return cls._pipe
+class _ImageGenerator:
+    """Class for handling image generation with Stable Diffusion model."""
     
-    @staticmethod
-    def generate(prompt: str, *options: GenerateOption) -> Image:
+    def __init__(self, model: str):
+        """Initialize the generator with a specific model."""
+        self.model = model
+        self._pipe = self._get_pipeline(model)
+
+    def _get_pipeline(self, model: str) -> StableDiffusionPipeline:
+        return StableDiffusionPipeline.from_pretrained(
+            model,
+            torch_dtype=torch.float16,
+            variant="fp16"
+        ).to("cuda")
+    
+    def generate(self, prompt: str, *options: GenerateOption) -> Image:
         """
         Generate image from text prompt with optional parameters.
         
@@ -37,9 +37,7 @@ class ImageGenerator:
         for option in options:
             option(params)
         
-        pipe = ImageGenerator._get_pipeline(params.model)
-        
-        return pipe(
+        return self._pipe(
             prompt=params.prompt,
             num_inference_steps=params.steps,
             guidance_scale=0.0,
@@ -47,9 +45,5 @@ class ImageGenerator:
             height=params.height
         ).images[0]
 
-if __name__ == "__main__":
-    # Simple test
-    img = ImageGenerator.generate(
-        "A fantasy landscape, trending on artstation",
-    )
-    ImageGenerator._pipe.save_pretrained("./model/sdxl-turbo")
+
+ImageGenerator = _ImageGenerator(model=Config.DEFAULT_MODEL)
