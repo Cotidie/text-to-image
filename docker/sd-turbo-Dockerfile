@@ -1,22 +1,18 @@
-# Build stage
+# docker build -t makelab/text-to-image:sd-turbo -f docker/sd-turbo-Dockerfile .
 FROM pytorch/pytorch:2.9.1-cuda13.0-cudnn9-runtime
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY backend/requirements.txt .
 RUN pip install --no-input --no-cache-dir -r requirements.txt
-
-COPY . .
 
 ENV PYTHONUNBUFFERED=1
 ENV HF_HOME=/app/cache
 ENV PORT=5555
+ENV DEFAULT_MODEL=/app/models/sd-turbo
 
-RUN mkdir -p /app/cache && \
-    useradd -m -u 1000 make && \
-    chown -R make:make /app
-
-USER make
+COPY backend/ .
+COPY models/sd-turbo /app/models/sd-turbo
 
 EXPOSE 5555
 

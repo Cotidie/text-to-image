@@ -15,7 +15,7 @@ def generate_image():
         req.validate()
 
         data = req.data()
-        image = ImageGenerator.generate(
+        image = ImageGenerator._instance.generate(
             data.prompt,
             Options.with_steps(data.steps),
             Options.with_size(data.width, data.height),

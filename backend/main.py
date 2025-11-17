@@ -5,12 +5,12 @@ from flask import Flask
 from config import Config
 from controller.image import image_blueprint
 from controller.healthcheck import healthcheck_blueprint
+from model.generator import ImageGenerator
 
 
 def create_app() -> Flask:
     """Create and configure Flask application."""
     app = Flask(__name__)
-
     app.register_blueprint(image_blueprint)
     app.register_blueprint(healthcheck_blueprint)
 
@@ -18,13 +18,15 @@ def create_app() -> Flask:
 
 
 def main():
+    config = Config().load_from_env()
+    ImageGenerator.initialize(config.DEFAULT_MODEL)
+
     app = create_app()
-    Config.load_from_env()
     
-    print(f"Starting Text-to-Image Generation Server on port {Config.PORT}...")
-    print(f"Model: {Config.DEFAULT_MODEL}")
+    print(f"Starting Text-to-Image Generation Server on port {config.PORT}...")
+    print(f"Model: {config.DEFAULT_MODEL}")
     
-    app.run(host="0.0.0.0", port=Config.PORT)
+    app.run(host="0.0.0.0", port=config.PORT)
 
 
 if __name__ == "__main__":

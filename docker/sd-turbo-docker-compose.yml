@@ -1,9 +1,11 @@
+# docker compose -f docker/sd-turbo-docker-compose.yml up -d
+
 services:
   sd-turbo:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: sd-turbo:pytorch
+      dockerfile: sd-turbo-Dockerfile
+    image: makelab/text-to-image:sd-turbo
     container_name: sd-turbo-server
     
     # GPU support
@@ -16,14 +18,7 @@ services:
               capabilities: [gpu]
     
     ports:
-      - "${PORT}:${PORT}"
-    
-    env_file:
-      - .env
-    
-    volumes:
-      - model-cache:${HF_HOME}
-      - ./model:/app/models
+      - "5555:5555"
     
     restart: unless-stopped
 

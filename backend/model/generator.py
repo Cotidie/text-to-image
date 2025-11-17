@@ -4,22 +4,27 @@ from PIL import Image
 import torch
 
 from model.generator_option import GenerateParameters, GenerateOption 
-from config import Config
 
-
-class _ImageGenerator:
+class ImageGenerator:
     """Class for handling image generation with Stable Diffusion model."""
-    
+
+    _instance = None
+
     def __init__(self, model: str):
         """Initialize the generator with a specific model."""
-        self.model = model
-        self._pipe = self._get_pipeline(model)
+        if ImageGenerator._instance == None:
+            self.model = model
+            self._pipe = self._get_pipeline(model)
+            ImageGenerator._instance = self
+
+    @classmethod
+    def initialize(cls, model: str):
+        cls._instance = ImageGenerator(model)
 
     def _get_pipeline(self, model: str) -> StableDiffusionPipeline:
         return StableDiffusionPipeline.from_pretrained(
             model,
             torch_dtype=torch.float16,
-            variant="fp16"
         ).to("cuda")
     
     def generate(self, prompt: str, *options: GenerateOption) -> Image:
@@ -37,13 +42,10 @@ class _ImageGenerator:
         for option in options:
             option(params)
         
-        return self._pipe(
+        return ImageGenerator._instance._pipe(
             prompt=params.prompt,
             num_inference_steps=params.steps,
             guidance_scale=0.0,
             width=params.width,
             height=params.height
         ).images[0]
-
-
-ImageGenerator = _ImageGenerator(model=Config.DEFAULT_MODEL)

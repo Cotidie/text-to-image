@@ -11,12 +11,13 @@ class Model(str, Enum):
 class Config:
     """Configuration settings for the image generation service."""
     
-    DEFAULT_MODEL: str  = Model.SD_TURBO.value    # which SD model to use
-    PORT: int           = 5555                    # port number for flask 
+    def __init__(self):
+        self.DEFAULT_MODEL = Model.SD_TURBO.value
+        self.PORT = 5555
 
-    @classmethod
-    def load_from_env(cls) -> None:
+    def load_from_env(self) -> "Config":
         """Load configuration from environment variables."""
+        self.DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", self.DEFAULT_MODEL)
+        self.PORT = int(os.getenv("PORT", self.PORT))
         
-        cls.DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", cls.DEFAULT_MODEL)
-        cls.PORT = int(os.getenv("PORT", cls.PORT))
+        return self
