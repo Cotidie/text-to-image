@@ -1,6 +1,6 @@
 # Text-to-Image Generation
 
-A simple Flask REST API for generating images from text prompts using Stability AI's SD-Turbo model, **locally**.
+A simple Flask REST API for generating images from text prompts using Stability AI's SD-Turbo model, **locally**. The server instance is responsible for a single Text2Image model in common scenario where only a single GPU is available.
 
 ## Features
 - Fast image generation from text prompts
@@ -20,35 +20,36 @@ A simple Flask REST API for generating images from text prompts using Stability 
 ![mvc-pattern](.images/readme-mvc-pattern.png)  
 ```
 backend/
-├── controller/          # Flask blueprints & route handlers
-│   ├── image.py             # Image generation endpoints
-│   ├── healthcheck.py       # Health check endpoints
-│   └── ...
-├── model/               # Business logic
-│   ├── generator.py         # Image generation with diffusers
-│   └── ...
-└── view/                # Request/response models
-    ├── request/         # Input parsing
-    └── response/        # Output formatting
+├─ controller/          # Flask blueprints & route handlers
+├─ model/               # Business/Domain logic
+├─ view/                # Request/response models
 ├── main.py              # Application entry point
 └── config.py            # Configuration & model enums
 ```
 
 ## Quick Start
+1. Install NVIDIA container toolkit
+| https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
 
-### Using Docker (Recommended)
+2. Download a model package (folder) containing .safetensors 
+  - Put the model folder into `models/`
+| ex) https://huggingface.co/stabilityai/sd-turbo/tree/main
+
+3. Build a docker
 ```bash
-docker-compose up -d
-docker exec -it sd-turbo-server python backend/main.py
+docker build -t text-to-image:local .
 ```
 
-### Local Setup
+4. Configure environment variables
+  - edit `.env` to choose a model to run
+    - `DEFAULT_MODEL=/app/models/sd-turbo`
+
+5. Run docker-compose
 ```bash
-pip install -r requirements.txt
-python backend/main.py
+docker compose up -d
 ```
 
-Server runs on `http://localhost:5000`
+6. Now your server runs on the port on `.env`
 
 ## API Endpoints
 

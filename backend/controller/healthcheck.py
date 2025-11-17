@@ -1,4 +1,3 @@
-"""Health check controller."""
 from flask import Blueprint
 
 
@@ -15,3 +14,15 @@ def ping():
     """
     return "pong", 200
 
+@healthcheck_blueprint.route("/info", methods=["GET"])
+def info():
+    """
+    Information endpoint.
+    
+    Returns:
+        Basic information about the service
+    """
+    return {
+        "service": "Text-to-Image Generation Server",
+        "status": "running"
+    }, 200
