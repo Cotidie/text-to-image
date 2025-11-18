@@ -4,6 +4,7 @@ from PIL import Image
 import torch
 
 from model.generator_option import GenerateParameters, GenerateOption 
+from enums import DeviceType
 
 class ImageGenerator:
     """Class for handling image generation with Stable Diffusion model."""
@@ -13,10 +14,12 @@ class ImageGenerator:
         self._pipe = self._get_pipeline(model)
 
     def _get_pipeline(self, model: str) -> StableDiffusionPipeline:
+        device, dtype = self._detect_device()
+
         return StableDiffusionPipeline.from_pretrained(
             model,
-            torch_dtype=torch.float16,
-        ).to("cuda")
+            torch_dtype=dtype,
+        ).to(device.value)
     
     def generate(self, prompt: str, *options: GenerateOption) -> Image:
         """
@@ -40,3 +43,17 @@ class ImageGenerator:
             width=params.width,
             height=params.height
         ).images[0]
+
+    # TODO: can be further devided to DeviceManager class to return Device
+    def _detect_device(self):
+        """Detect the available device type."""
+
+        if torch.cuda.is_available():
+            print("✅ Using CUDA (NVIDIA GPU)")
+            return DeviceType.CUDA, torch.float16
+        elif torch.backends.mps.is_available():
+            print("✅ Using MPS (Apple Silicon)")
+            return DeviceType.MPS, torch.float16
+        else:
+            print("⚠️ Using CPU (Fallback)")
+            return DeviceType.CPU, torch.float32

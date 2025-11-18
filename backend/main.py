@@ -11,8 +11,8 @@ def create_app(config: Config) -> Flask:
     """Create and configure Flask application."""
     app = Flask(__name__)
 
-    image_generator = ImageGenerator(config.DEFAULT_MODEL)
-
+    image_generator = ImageGenerator(config.model, config.device_type)
+    
     image_controller = ImageController(image_generator)
     health_controller = HealthController()
 
@@ -26,10 +26,10 @@ def main():
     config = Config().load_from_env()
     app = create_app(config)
     
-    print(f"Starting Text-to-Image Generation Server on port {config.PORT}...")
-    print(f"Model: {config.DEFAULT_MODEL}")
+    print(f"Starting Text-to-Image Generation Server on port {config.port}...")
+    print(f"Model: {config.model}")
     
-    app.run(host="0.0.0.0", port=config.PORT)
+    app.run(host="0.0.0.0", port=config.port)
 
 
 if __name__ == "__main__":

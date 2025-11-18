@@ -1,6 +1,7 @@
 from flask import Blueprint
 from model.generator import ImageGenerator
 
+from config import Config
 from .generate import GenerateImageAPI
 
 class ImageController:
