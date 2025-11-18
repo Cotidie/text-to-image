@@ -3,8 +3,7 @@
 A simple Flask REST API for generating images from text prompts using Stability AI's SD-Turbo model, **locally**. The server instance is responsible for a single Text2Image model in common scenario where only a single GPU is available.
 
 ## Features
-- Fast image generation from text prompts
-- GPU-accelerated inference with CUDA support
+- image generation from text prompts
 - Docker containerized deployment
 - MVC architecture with Flask blueprints
 
