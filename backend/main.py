@@ -1,30 +1,30 @@
 #!/usr/bin/env python3
 """Entry point for the text-to-image generation server."""
-from flask import Flask
+from flask import Flask, config
 
 from config import Config
-from controller.controller_health import healthcheck_blueprint
 from model.generator import ImageGenerator
-from controller import ImageController
+from controller.image import ImageController
+from controller.health import HealthController
 
-
-def create_app(generator: ImageGenerator) -> Flask:
+def create_app(config: Config) -> Flask:
     """Create and configure Flask application."""
     app = Flask(__name__)
 
-    image_controller = ImageController(generator)
+    image_generator = ImageGenerator(config.DEFAULT_MODEL)
+
+    image_controller = ImageController(image_generator)
+    health_controller = HealthController()
+
     app.register_blueprint(image_controller.get_blueprint())
-    app.register_blueprint(healthcheck_blueprint)
+    app.register_blueprint(health_controller.get_blueprint())
 
     return app
 
 
 def main():
     config = Config().load_from_env()
-
-    image_generator = ImageGenerator(config.DEFAULT_MODEL)
-
-    app = create_app(image_generator)
+    app = create_app(config)
     
     print(f"Starting Text-to-Image Generation Server on port {config.PORT}...")
     print(f"Model: {config.DEFAULT_MODEL}")

@@ -1,3 +1,3 @@
-from .generate import GenerateImageAPI
+from .controller import ImageController
 
-__all__ = ['GenerateImageAPI']
+__all__ = ['ImageController']
