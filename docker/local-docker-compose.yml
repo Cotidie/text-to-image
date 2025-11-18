@@ -1,8 +1,5 @@
 services:
   sd-turbo:
-    build:
-      context: .
-      dockerfile: local-Dockerfile
     image: makelab/text-to-image:local
     container_name: sd-turbo-server
     

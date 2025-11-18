@@ -29,10 +29,12 @@ backend/
 
 ## Quick Start
 1. Install NVIDIA container toolkit
+
 | https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
 
 2. Download a model package (folder) containing .safetensors 
   - Put the model folder into `models/`
+
 | ex) https://huggingface.co/stabilityai/sd-turbo/tree/main
 
 3. Build a docker

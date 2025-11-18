@@ -2,9 +2,6 @@
 
 services:
   sd-turbo:
-    build:
-      context: .
-      dockerfile: sd-turbo-Dockerfile
     image: makelab/text-to-image:sd-turbo
     container_name: sd-turbo-server
     
@@ -21,6 +18,9 @@ services:
       - "5555:5555"
     
     restart: unless-stopped
+    
+    tty: true
+    command: "/bin/bash"
 
 volumes:
   model-cache:
