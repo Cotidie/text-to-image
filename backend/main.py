@@ -3,15 +3,17 @@
 from flask import Flask
 
 from config import Config
-from controller.image import image_blueprint
 from controller.healthcheck import healthcheck_blueprint
 from model.generator import ImageGenerator
+from controller.image import ImageController
 
 
 def create_app() -> Flask:
     """Create and configure Flask application."""
     app = Flask(__name__)
-    app.register_blueprint(image_blueprint)
+    image_controller = ImageController(ImageGenerator._instance)
+
+    app.register_blueprint(image_controller.get_blueprint())
     app.register_blueprint(healthcheck_blueprint)
 
     return app
