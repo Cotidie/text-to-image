@@ -3,9 +3,9 @@
 from flask import Flask
 
 from config import Config
-from controller.healthcheck import healthcheck_blueprint
+from controller.controller_health import healthcheck_blueprint
 from model.generator import ImageGenerator
-from controller.image import ImageController
+from controller import ImageController
 
 
 def create_app(generator: ImageGenerator) -> Flask:
@@ -21,7 +21,7 @@ def create_app(generator: ImageGenerator) -> Flask:
 
 def main():
     config = Config().load_from_env()
-    
+
     image_generator = ImageGenerator(config.DEFAULT_MODEL)
 
     app = create_app(image_generator)

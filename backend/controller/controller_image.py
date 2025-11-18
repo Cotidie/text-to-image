@@ -1,6 +1,6 @@
 from flask import Blueprint
 from model.generator import ImageGenerator
-from controller.image.generate import GenerateImageAPI
+from controller.image import GenerateImageAPI
 
 class ImageController:
     """Controller for /image endpoint."""

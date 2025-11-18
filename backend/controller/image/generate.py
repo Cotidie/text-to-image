@@ -2,7 +2,7 @@ import io
 from flask import request, send_file
 from flask.views import MethodView
 from model.generator import ImageGenerator
-from model.generator_option import Options
+import model.generator_option as Options
 from view.request.parser import RequestParser
 
 class GenerateImageAPI(MethodView):

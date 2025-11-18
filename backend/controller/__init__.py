@@ -1,8 +1,5 @@
-
-from .image import ImageController
-from .healthcheck import healthcheck_blueprint
+from .controller_image import ImageController
 
 __all__ = [
-    "healthcheck_blueprint",
     "ImageController",
 ]
