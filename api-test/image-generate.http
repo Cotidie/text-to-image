@@ -2,7 +2,7 @@ POST http://localhost:5555/image/generate
 Content-Type: application/json
 
 {
-  "prompt": "Pucca running on a roof under a starry night, digital art",
+  "prompt": "mutated korean man, with glasses, bowl cut hairstyle, black hoodie, gray pants, with a baseball in his hand, photorealistic",
   "width": 512,
   "height": 512,
   "steps": 4

@@ -1,5 +1,5 @@
 """Image generation logic"""
-from diffusers import DiffusionPipeline, AutoPipelineForText2Image
+from diffusers import AutoPipelineForText2Image, DiffusionPipeline
 from PIL import Image
 
 from model.generator_option import GenerateParameters, GenerateOption 
@@ -12,7 +12,6 @@ class ImageGenerator:
         self.model = model
         self.device = device
         self._pipe = self._get_pipeline(model)
-        print("Pipeline loaded: ", self._pipe)
     
     def generate(self, prompt: str, *options: GenerateOption) -> Image:
         """
@@ -40,7 +39,8 @@ class ImageGenerator:
         ).images[0]
     
     def _get_pipeline(self, model: str) -> DiffusionPipeline:
-        return DiffusionPipeline.from_pretrained(
+        return AutoPipelineForText2Image.from_pretrained(
             model,
             torch_dtype=self.device.dtype,
+            variant="fp16"
         ).to(self.device.type.value)

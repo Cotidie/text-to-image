@@ -2,10 +2,11 @@
 """Entry point for the text-to-image generation server."""
 from flask import Flask
 
-from config import Config
+from config import Config, ConfigBuilder
 from model.generator import ImageGenerator
 from controller import ImageController, HealthController
 from utils import DeviceDetector
+from enums import Model
 
 def create_app(config: Config) -> Flask:
     """Create and configure Flask application."""
@@ -22,9 +23,12 @@ def create_app(config: Config) -> Flask:
 
 
 def main():
-    config = Config().load_from_env()
-    config.device = DeviceDetector.detect()
-    
+    config = ConfigBuilder()\
+        .with_model(Model.SDXL_TURBO)\
+        .with_port(5555)\
+        .with_env()\
+        .build()
+
     app = create_app(config)
     
     print(f"Starting Text-to-Image Generation Server on port {config.port}...")
