@@ -20,10 +20,14 @@ A simple Flask REST API for generating images from text prompts using Stability 
 ```
 backend/
 ├─ controller/          # Flask blueprints & route handlers
+├─── image/               # API definitions for /image endpoint group
+├─── ...
 ├─ model/               # Business/Domain logic
 ├─ view/                # Request/response models
-├── main.py              # Application entry point
-└── config.py            # Configuration & model enums
+├─ enums/               
+├─ utils/               # system, infra level utility classes
+├─ main.py              # Application entry point
+└─ config.py            # Configuration & model enums
 ```
 
 ## Quick Start
