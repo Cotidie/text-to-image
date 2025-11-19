@@ -9,10 +9,10 @@ RUN pip install --no-input --no-cache-dir -r requirements.txt
 ENV PYTHONUNBUFFERED=1
 ENV HF_HOME=/app/cache
 ENV PORT=5555
-ENV DEFAULT_MODEL=/app/models/sd-turbo
+ENV MODEL=/app/models/sdxl-turbo
 
 COPY backend/ .
-COPY models/sd-turbo /app/models/sd-turbo
+COPY models/sdxl-turbo /app/models/sdxl-turbo
 
 EXPOSE 5555
 

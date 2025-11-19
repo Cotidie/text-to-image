@@ -42,5 +42,4 @@ class ImageGenerator:
         return AutoPipelineForText2Image.from_pretrained(
             model,
             torch_dtype=self.device.dtype,
-            variant="fp16"
         ).to(self.device.type.value)

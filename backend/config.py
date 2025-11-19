@@ -24,6 +24,10 @@ class ConfigBuilder:
         self._config.model = model.value
         return self
     
+    def with_local_model(self, model_path: str) -> "ConfigBuilder":
+        self._config.model = model_path
+        return self
+    
     def with_port(self, port: int) -> "ConfigBuilder":
         self._config.port = port
         return self
