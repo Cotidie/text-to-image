@@ -25,7 +25,7 @@ class GenerateImageAPI(MethodView):
                 Options.with_steps(data.steps),
                 Options.with_size(data.width, data.height),
             )
-
+            print("Image generation completed.")
             image_io = io.BytesIO()
             image.save(image_io, data.format, quality=100)
             image_io.seek(0)

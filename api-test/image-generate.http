@@ -2,7 +2,7 @@ POST http://localhost:5555/image/generate
 Content-Type: application/json
 
 {
-  "prompt": "A futuristic cityscape at sunset",
+  "prompt": "Pucca running on a roof under a starry night, digital art",
   "width": 512,
   "height": 512,
   "steps": 4
