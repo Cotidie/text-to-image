@@ -23,7 +23,7 @@ services:
     
     volumes:
       - model-cache:${HF_HOME}
-      - ./models:/app/models
+      - ./models:${MODEL_HOME}
     
     restart: unless-stopped
 
