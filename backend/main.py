@@ -32,8 +32,11 @@ def main():
     
     print(f"Starting Text-to-Image Generation Server on port {config.port}...")
     print(f"Model: {config.model}")
-    
-    app.run(host="0.0.0.0", port=config.port)
+
+    try:
+        app.run(host="0.0.0.0", port=config.port)
+    except Exception as e:
+        print(f"Error running the server: {e}")
 
 
 if __name__ == "__main__":

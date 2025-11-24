@@ -1,8 +1,8 @@
 from flask import Blueprint
 from model.generator import ImageGenerator
 
-from config import Config
 from .generate import GenerateImageAPI
+from .edit import EditImageAPI
 
 class ImageController:
     """Controller for /image endpoint."""
@@ -23,6 +23,14 @@ class ImageController:
             '/generate',
             view_func=GenerateImageAPI.as_view(
                 '/image/generate',
+                generator=self.generator
+            ),
+            methods=['POST']
+        )
+        self.blueprint.add_url_rule(
+            '/edit',
+            view_func=EditImageAPI.as_view(
+                '/image/edit',
                 generator=self.generator
             ),
             methods=['POST']

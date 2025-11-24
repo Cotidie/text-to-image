@@ -3,7 +3,7 @@ from flask import request, send_file
 from flask.views import MethodView
 from model.generator import ImageGenerator
 import model.generator_option as Options
-from view.request.parser import RequestParser
+from view.request.image.generate import GenerateImage
 
 class GenerateImageAPI(MethodView):
     """Handle image generation requests."""
@@ -16,10 +16,9 @@ class GenerateImageAPI(MethodView):
 
     def post(self):
         try:
-            req = RequestParser.generate_image(request)
-            req.validate()
+            data = GenerateImage.from_request(request)
+            data.validate()
 
-            data = req.data()
             image = self.generator.generate(
                 data.prompt,
                 Options.with_steps(data.steps),

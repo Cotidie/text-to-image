@@ -8,8 +8,8 @@ class LoadType(str, Enum):
 @dataclass
 class Model:
     type: LoadType
-    name: str
     path: str
+    name: str = ""
 
 class SupportedModels:
     SD_TURBO = Model(

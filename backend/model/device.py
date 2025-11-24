@@ -8,5 +8,13 @@ class Device:
     
     type: DeviceType
     dtype: torch.dtype
+
+
+class PredefinedDevices:
+    """Predefined device configurations."""
+    
+    CUDA = Device(type=DeviceType.CUDA, dtype=torch.float16)
+    MPS = Device(type=DeviceType.MPS, dtype=torch.float16)
+    CPU = Device(type=DeviceType.CPU, dtype=torch.float32)
         
 
