@@ -23,7 +23,7 @@ def create_app(config: Config) -> Flask:
 
 def main():
     config = ConfigBuilder()\
-        .with_local_model("/home/cotidie/repositories/cotidie/text-to-image/models/sdxl-turbo")\
+        .with_remote_model("stabilityai/sdxl-turbo")\
         .with_port(5555)\
         .with_env()\
         .build()
