@@ -1,9 +1,5 @@
 services:
   base:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: makelab/backend:image-generation
     ports:
       - "${PORT}:${PORT}"
     env_file:
@@ -16,9 +12,13 @@ services:
 
   nvidia:
     extends: base
+    image: makelab/backend:image-generation-nvidia
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: pytorch/pytorch:2.9.1-cuda13.0-cudnn9-runtime
     container_name: server-image-generation
-    ports:
-      - "${PORT}:${PORT}"
     deploy:
       resources:
         reservations:
@@ -30,6 +30,12 @@ services:
 
   amd:
     extends: base
+    image: makelab/backend:image-generation-amd
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: rocm/pytorch:rocm7.1_ubuntu24.04_py3.12_pytorch_release_2.8.0
     container_name: server-image-generation
     devices:
       - /dev/dri:/dev/dri

@@ -22,8 +22,8 @@ class ConfigBuilder:
         self._config.device = DeviceDetector.detect()
 
     def with_env(self) -> "ConfigBuilder":
-        model_type = os.getenv("MODEL_TYPE", self._config.model.type.value).lower()
-        model_path = os.getenv("MODEL_PATH", self._config.model.path)
+        model_type = os.getenv("MODEL_TYPE", "local").lower()
+        model_path = os.getenv("MODEL_PATH", None)
         model_home = os.getenv("MODEL_HOME", self._config.home_models)
         home_cache = os.getenv("HF_HOME", self._config.home_cache)
         port = os.getenv("PORT", self._config.port)
