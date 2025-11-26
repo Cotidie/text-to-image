@@ -1,0 +1,44 @@
+services:
+  base:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: makelab/backend:image-generation
+    ports:
+      - "${PORT}:${PORT}"
+    env_file:
+      - .env
+    volumes:
+      - model-cache:${HF_HOME}
+      - ${MODEL_HOME_HOST}:${MODEL_HOME}
+    restart: unless-stopped
+    profiles: ["base-only"]   # This service is abstract and will be inherited
+
+  nvidia:
+    extends: base
+    container_name: server-image-generation
+    ports:
+      - "${PORT}:${PORT}"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    profiles: ["nvidia"]
+
+  amd:
+    extends: base
+    container_name: server-image-generation
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/kfd:/dev/kfd
+    security_opt:
+      - seccomp=unconfined
+    group_add:
+      - video
+    profiles: ["amd"]
+
+volumes:
+  model-cache:

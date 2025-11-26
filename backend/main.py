@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Entry point for the text-to-image generation server."""
 from flask import Flask
 
 from config import Config, ConfigBuilder
 from model.generator import ImageGenerator
 from controller import ImageController, HealthController
-from model.model import SupportedModels
 
 def create_app(config: Config) -> Flask:
     """Create and configure Flask application."""
@@ -23,7 +21,6 @@ def create_app(config: Config) -> Flask:
 
 def main():
     config = ConfigBuilder()\
-        .with_remote_model("stabilityai/sdxl-turbo")\
         .with_port(5555)\
         .with_env()\
         .build()
