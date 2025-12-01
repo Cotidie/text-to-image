@@ -16,7 +16,7 @@ A simple Flask REST API for generating images from text prompts using Stability 
 - **Container**: pytorch with CUDA support
 
 ## Project Structure
-![mvc-pattern](docs/.images/readme-mvc-pattern.png)  
+![mvc-pattern](.images/readme-mvc-pattern.png)  
 ```
 backend/
 ├─ controller/          # Flask blueprints & route handlers
