@@ -16,10 +16,11 @@ def create_app(config: Config) -> Flask:
         PipelineOption.with_attention_slicing(True),
         PipelineOption.with_load_to_device(config.device.type),
     )
-    generate_controller = ImageController(generator)
+
+    image_controller = ImageController(generator)
     health_controller = HealthController()
 
-    app.register_blueprint(generate_controller.get_blueprint())
+    app.register_blueprint(image_controller.get_blueprint())
     app.register_blueprint(health_controller.get_blueprint())
 
     return app
@@ -41,7 +42,6 @@ def main():
         app.run(host="0.0.0.0", port=config.port)
     except Exception as e:
         print(f"Error running the server: {e}")
-
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,3 @@
-"""Image generation logic"""
 from diffusers import AutoPipelineForText2Image
 from PIL.Image import Image
 from model.image_generator_option import GenerateParameter, GenerateOption 
@@ -68,9 +67,12 @@ class ImageGenerator:
     
     def _apply_pipeline_options(self, params: PipelineParameter):
         if params.attention_slicing:
+            print("✅ attention slicing enabled")
             self.pipe.enable_attention_slicing()
         if params.cpu_offload:
+            print("✅ CPU offload enabled") 
             self.pipe.enable_model_cpu_offload()
         if params.device != DeviceType.NONE:
-            self.pipe.to(params.device.value)
+            print("✅ loading pipeline to device:", params.device.value)
+            self.pipe = self.pipe.to(params.device.value)
         
