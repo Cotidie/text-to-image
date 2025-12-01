@@ -10,14 +10,16 @@ from enums.device_type import DeviceType
 class ImageGenerator:
     """Class for handling image generation with Stable Diffusion model."""
 
-    def __init__(self):
+    def __init__(self, model: Model, device: Device):
+        self.model = model
+        self.device = device
         self.pipe = None
 
-    def prepare(self, model: Model, device: Device, *options: PipelineOption):
+    def prepare(self, *options: PipelineOption):
         """Prepare the generator with a new model and device."""
         self.pipe = AutoPipelineForText2Image.from_pretrained(
-            model.path,
-            torch_dtype=device.dtype,
+            self.model.path,
+            torch_dtype=self.device.dtype,
             use_safetensors=True,
         )
 
@@ -28,7 +30,7 @@ class ImageGenerator:
 
         print("Pipelines re-initialized with new model and device.")
 
-    def prepare(self, pipe, *options: PipelineOption):
+    def prepare_from_pipe(self, pipe, *options: PipelineOption):
         """Prepare the generator with a custom pipeline."""
         self.pipe = AutoPipelineForText2Image.from_pipe(pipe)
         
@@ -65,10 +67,10 @@ class ImageGenerator:
         ).images[0]
     
     def _apply_pipeline_options(self, params: PipelineParameter):
-        if params.enable_attention_slicing:
+        if params.attention_slicing:
             self.pipe.enable_attention_slicing()
-        if params.enable_sequential_cpu_offload:
-            self.pipe.enable_sequential_cpu_offload()
+        if params.cpu_offload:
+            self.pipe.enable_model_cpu_offload()
         if params.device != DeviceType.NONE:
             self.pipe.to(params.device.value)
         
