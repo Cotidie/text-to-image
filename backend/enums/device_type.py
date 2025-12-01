@@ -6,4 +6,5 @@ class DeviceType(str, Enum):
     AMD = "cuda"   # AMD uses ROCm which is compatible with CUDA
     MPS = "mps"    # Apple Silicon
     CPU = "cpu"
+    NONE = "none" 
     

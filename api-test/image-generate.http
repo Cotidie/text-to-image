@@ -1,4 +1,4 @@
-POST http://localhost:5555/image/generate  
+POST http://13.124.14.43:5555/image/generate  
 Content-Type: application/json
 
 {

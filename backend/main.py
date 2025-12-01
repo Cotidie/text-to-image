@@ -2,18 +2,24 @@
 from flask import Flask
 
 from config import Config, ConfigBuilder
-from model.generator import ImageGenerator
+from model.image_generator import ImageGenerator
+import model.pipeline_option as PipelineOption
 from controller import ImageController, HealthController
 
 def create_app(config: Config) -> Flask:
     """Create and configure Flask application."""
     app = Flask(__name__)
 
-    image_generator = ImageGenerator(config.model, config.device)
-    image_controller = ImageController(image_generator)
+    generator = ImageGenerator(
+        config.model, config.device,
+        PipelineOption.with_cpu_offload(True),
+        PipelineOption.with_attention_slicing(True),
+        PipelineOption.with_load_to_device(config.device.type),
+    )
+    generate_controller = ImageController(generator)
     health_controller = HealthController()
 
-    app.register_blueprint(image_controller.get_blueprint())
+    app.register_blueprint(generate_controller.get_blueprint())
     app.register_blueprint(health_controller.get_blueprint())
 
     return app

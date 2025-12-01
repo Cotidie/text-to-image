@@ -1,4 +1,4 @@
 from .device import Device
-from .generator import ImageGenerator
-from .generator_option import GenerateOption, GenerateParameters
+from .image_generator import ImageGenerator
+from .image_generator_option import GenerateOption, GenerateParameter
 from .model import Model, SupportedModels
