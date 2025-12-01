@@ -11,6 +11,7 @@ RUN pip install --no-input --no-cache-dir -r requirements.txt
 
 ENV PYTHONUNBUFFERED=1
 ENV HF_HOME=/app/cache
+ENV MODEL_PATH=/app/model
 ENV PORT=5555
 
 EXPOSE 5555

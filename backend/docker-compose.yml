@@ -6,9 +6,12 @@ services:
       - .env
     volumes:
       - model-cache:${HF_HOME}
-      - ${MODEL_HOME_HOST}:${MODEL_HOME}
+      - ${MODEL_PATH}:/app/model
+    environment:
+      - HF_HOME=/app/cache
+      - MODEL_PATH=/app/model  # OVERRIDE on container runtime
     restart: unless-stopped
-    profiles: ["base-only"]   # This service is abstract and will be inherited
+    profiles: ["base-only"]    # This service is abstract and will be inherited
 
   nvidia:
     extends: base

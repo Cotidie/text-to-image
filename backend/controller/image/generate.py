@@ -15,27 +15,22 @@ class GenerateImageAPI(MethodView):
         self.generator = generator 
 
     def post(self):
-        try:
-            data = GenerateImage.from_request(request)
-            data.validate()
+        data = GenerateImage.from_request(request)
+        data.validate()
 
-            image = self.generator.generate(
-                data.prompt,
-                Options.with_steps(data.steps),
-                Options.with_size(data.width, data.height),
-            )
-            print("Image generation completed.")
-            image_io = io.BytesIO()
-            image.save(image_io, data.format, quality=100)
-            image_io.seek(0)
-            
-            return send_file(
-                image_io,
-                mimetype=f'image/{data.format}',
-                as_attachment=False,
-                download_name=f'generated_image.{data.format}'
-            )
+        image = self.generator.generate(
+            data.prompt,
+            Options.with_steps(data.steps),
+            Options.with_size(data.width, data.height),
+        )
+
+        image_io = io.BytesIO()
+        image.save(image_io, data.format, quality=100)
+        image_io.seek(0)
         
-        except Exception as e:
-            print(f"Error generating image: {e}")
-            return str(e), 500
+        return send_file(
+            image_io,
+            mimetype=f'image/{data.format}',
+            as_attachment=False,
+            download_name=f'generated_image.{data.format}'
+        )

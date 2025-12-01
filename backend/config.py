@@ -1,44 +1,45 @@
 import os
 from dataclasses import dataclass
 from model.device import Device
-from model.model import LoadType, Model, SupportedModels
+from model.model import LoadType, Model
 from huggingface_hub import HfApi
 from utils import DeviceDetector
 
 @dataclass
 class Config:
     """Configuration settings for the image generation service."""
-    model: Model = None
-    device: Device = None
+    model: Model
+    device: Device
 
     port: int = 5555
-    home_models: str = "/app/models"
-    home_cache: str = "/app/cache"
 
 class ConfigBuilder:
 
     def __init__(self):
-        self._config = Config()
-        self._config.device = DeviceDetector.detect()
+        # Builder elements should be raw values rather than dataclass-wrapped.
+        # This makes it easier to override them using environment variables.
+        self.load_type = LoadType.NONE
+        self.model_name = "local model"
+        self.model_path = ""
+        self.model_repo = ""
+        self.port = 5555
+        self.device = DeviceDetector.detect()
 
     def with_env(self) -> "ConfigBuilder":
-        model_type = os.getenv("MODEL_TYPE", "local").lower()
-        model_path = os.getenv("MODEL_PATH", None)
-        model_home = os.getenv("MODEL_HOME", self._config.home_models)
-        home_cache = os.getenv("HF_HOME", self._config.home_cache)
-        port = os.getenv("PORT", self._config.port)
+        model_type = os.getenv("MODEL_TYPE", self.load_type.value)
+        model_path = os.getenv("MODEL_PATH", self.model_path)
+        model_name = os.getenv("MODEL_NAME", self.model_name)
+        model_repo = os.getenv("MODEL_REPO", self.model_repo)
+        port = os.getenv("PORT", self.port)
         
+        model_type = model_type.lower()
         if model_type == LoadType.REMOTE.value:
-            self.with_remote_model(model_path)
+            self.with_remote_model(model_repo)
         elif model_type == LoadType.LOCAL.value:
-            model_path = os.path.join(model_home, model_path)
             self.with_local_model(model_path)
-        else:
-            raise ValueError(f"Unsupported MODEL_TYPE: {model_type}")
-
-        self._config.home_models = model_home    
-        self._config.home_cache = home_cache
-        self._config.port = port
+    
+        self.port = int(port)
+        self.model_name = model_name
 
         return self
     
@@ -49,30 +50,35 @@ class ConfigBuilder:
     def with_remote_model(self, repo: str) -> "ConfigBuilder":
         HfApi().model_info(repo)  # raises error if not found
 
-        model = Model(
-            type=LoadType.REMOTE,
-            name=repo.split("/")[-1],
-            path=repo
-        )
-        self._config.model = model
+        self.load_type = LoadType.REMOTE
+        self.model_path = repo
+        self.model_name = repo.split("/")[-1]
+
         return self
     
     def with_local_model(self, path: str) -> "ConfigBuilder":
         if not os.path.exists(path):
             raise FileNotFoundError(f"Local model path not found: {path}")
 
-        model = Model(
-            type=LoadType.LOCAL,
-            name=os.path.basename(path),
-            path=path
-        )
-        self._config.model = model
+        self.load_type = LoadType.LOCAL
+        self.model_path = path
 
         return self
     
     def with_port(self, port: int) -> "ConfigBuilder":
-        self._config.port = port
+        self.port = port
         return self
 
     def build(self) -> Config:
-        return self._config
+        if self.load_type == LoadType.NONE:
+            raise ValueError("Model type must be specified before building Config.")
+
+        return Config(
+            model=Model(
+                type=self.load_type,
+                path=self.model_path,
+                name=self.model_name
+            ),
+            device=self.device,
+            port=self.port
+        )

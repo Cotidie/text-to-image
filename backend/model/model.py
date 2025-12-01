@@ -4,12 +4,13 @@ from enum import Enum
 class LoadType(str, Enum):
     LOCAL = "local"
     REMOTE = "remote"
+    NONE = "none"
 
 @dataclass
 class Model:
     type: LoadType
-    path: str
     name: str = ""
+    path: str = ""
 
 class SupportedModels:
     SD_TURBO = Model(
