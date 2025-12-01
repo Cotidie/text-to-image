@@ -48,8 +48,6 @@ class ConfigBuilder:
         return self
 
     def with_remote_model(self, repo: str) -> "ConfigBuilder":
-        HfApi().model_info(repo)  # raises error if not found
-
         self.load_type = LoadType.REMOTE
         self.model_path = repo
         self.model_name = repo.split("/")[-1]
@@ -57,9 +55,6 @@ class ConfigBuilder:
         return self
     
     def with_local_model(self, path: str) -> "ConfigBuilder":
-        if not os.path.exists(path):
-            raise FileNotFoundError(f"Local model path not found: {path}")
-
         self.load_type = LoadType.LOCAL
         self.model_path = path
 
@@ -69,9 +64,17 @@ class ConfigBuilder:
         self.port = port
         return self
 
-    def build(self) -> Config:
+    def validate(self) -> None:
         if self.load_type == LoadType.NONE:
             raise ValueError("Model type must be specified before building Config.")
+        if self.load_type == LoadType.LOCAL: 
+            if not os.path.exists(self.model_path):
+                raise FileNotFoundError(f"Local model path not found: {self.model_path}")
+        if self.load_type == LoadType.REMOTE:
+            HfApi().model_info(self.model_repo)
+
+    def build(self) -> Config:
+        self.validate()
 
         return Config(
             model=Model(
