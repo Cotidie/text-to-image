@@ -26,7 +26,7 @@ class ConfigBuilder:
         self.device = DeviceDetector.detect()
 
     def with_env(self) -> "ConfigBuilder":
-        model_type = os.getenv("MODEL_TYPE", self.load_type.value)
+        model_type = os.getenv("LOAD_TYPE", self.load_type.value)
         model_path = os.getenv("MODEL_PATH", self.model_path)
         model_name = os.getenv("MODEL_NAME", self.model_name)
         model_repo = os.getenv("MODEL_REPO", self.model_repo)

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 from flask import Flask
 
 from config import Config, ConfigBuilder
@@ -12,7 +13,7 @@ def create_app(config: Config) -> Flask:
 
     generator = ImageGenerator(config.model, config.device)
     generator.prepare(
-        PipelineOption.with_cpu_offload(True),
+        PipelineOption.with_cpu_offload(False),
         PipelineOption.with_attention_slicing(True),
         PipelineOption.with_load_to_device(config.device.type),
     )
@@ -29,7 +30,6 @@ def create_app(config: Config) -> Flask:
 def main():
     config = ConfigBuilder()\
         .with_port(5555)\
-        .with_local_model("/home/cotidie/models/sdxl-turbo")\
         .with_env()\
         .build()
 
@@ -37,6 +37,7 @@ def main():
     
     print(f"Starting Text-to-Image Generation Server on port {config.port}...")
     print(f"Model: {config.model}")
+    print(f"Device: {os.getenv('MODEL_PATH', 'NOWAYYY')}")
 
     try:
         app.run(host="0.0.0.0", port=config.port)

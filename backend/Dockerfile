@@ -6,13 +6,15 @@ FROM ${BASE_IMAGE}
 
 WORKDIR /app
 
-COPY . .
+ENV PYTHONUNBUFFERED=1
+ENV HF_HOME=/etc/cache
+ENV MODEL_PATH=/etc/model
+ENV PORT=5555
+
+COPY requirements.txt requirements.txt
 RUN pip install --no-input --no-cache-dir -r requirements.txt
 
-ENV PYTHONUNBUFFERED=1
-ENV HF_HOME=/app/cache
-ENV MODEL_PATH=/app/model
-ENV PORT=5555
+COPY . .
 
 EXPOSE 5555
 

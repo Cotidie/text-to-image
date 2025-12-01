@@ -5,11 +5,11 @@ services:
     env_file:
       - .env
     volumes:
-      - model-cache:${HF_HOME}
-      - ${MODEL_PATH}:/app/model
+      - model-cache:/etc/cache
+      - ${MODEL_PATH}:/etc/model
     environment:
-      - HF_HOME=/app/cache
-      - MODEL_PATH=/app/model  # OVERRIDE on container runtime
+      - HF_HOME=/etc/cache
+      - MODEL_PATH=/etc/model  # OVERRIDE on container runtime
     restart: unless-stopped
     profiles: ["base-only"]    # This service is abstract and will be inherited
 
