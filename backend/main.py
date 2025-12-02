@@ -21,8 +21,8 @@ def create_app(config: Config) -> Flask:
     image_controller = ImageController(generator)
     health_controller = HealthController()
 
-    app.register_blueprint(image_controller.get_blueprint())
-    app.register_blueprint(health_controller.get_blueprint())
+    app.register_blueprint(image_controller.get_blueprint(), url_prefix='/api/image')
+    app.register_blueprint(health_controller.get_blueprint(), url_prefix='/api/health')
 
     return app
 
