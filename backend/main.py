@@ -3,7 +3,7 @@ import os
 from flask import Flask
 
 from config import Config, ConfigBuilder
-from model.image_generator import ImageGenerator
+from model.generator import ImageGenerator
 import model.pipeline_option as PipelineOption
 from controller import ImageController, HealthController
 

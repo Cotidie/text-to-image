@@ -1,6 +1,6 @@
 from diffusers import AutoPipelineForText2Image
 from PIL.Image import Image
-from model.image_generator_option import GenerateParameter, GenerateOption 
+from model.generator_option import GenerateParameter, GenerateOption 
 from model.pipeline_option import PipelineParameter, PipelineOption
 from model.device import Device
 from model.model import Model

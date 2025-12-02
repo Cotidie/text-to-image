@@ -1,5 +1,5 @@
 from flask import Blueprint
-from model.image_generator import ImageGenerator
+from model.generator import ImageGenerator
 
 from .generate import GenerateImageAPI
 from .edit import EditImageAPI

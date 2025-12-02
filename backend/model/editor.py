@@ -3,7 +3,7 @@
 
 from diffusers import AutoPipelineForImage2Image, DiffusionPipeline
 from enums.device_type import DeviceType
-from model.image_editor_option import EditParameter, EditOption
+from model.editor_option import EditParameter, EditOption
 from model.pipeline_option import PipelineOption, PipelineParameter
 from PIL.Image import Image
 
