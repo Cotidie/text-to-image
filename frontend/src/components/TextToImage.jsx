@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 function TextToImage() {
   const [prompt, setPrompt] = useState('')
+  const [steps, setSteps] = useState(2)
   const [image, setImage] = useState(null)
   const [loading, setLoading] = useState(false)
 
@@ -13,27 +14,24 @@ function TextToImage() {
 
     setLoading(true)
     try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+      const backendUrl = import.meta.env.VITE_API_BASE;
+      console.log("Backend URL:", backendUrl);
       
-      // Example fetch call matching the backend assumption
-      /*
-      const response = await fetch(`${backendUrl}/image/generate`, {
+      const response = await fetch(`${backendUrl}/api/image/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt })
+        body: JSON.stringify({ 
+          prompt, 
+          steps: parseInt(steps) 
+        })
       })
       
       if (!response.ok) throw new Error('Network response was not ok')
       
-      const data = await response.json()
-      // Assuming backend returns { "image": "base64string" }
-      setImage(`data:image/png;base64,${data.image}`)
-      */
-
-      // Simulation
-      console.log("Generating for:", prompt)
-      await new Promise(r => setTimeout(r, 1000))
-      setImage("https://via.placeholder.com/512x512.png?text=Generated+Image")
+      // Backend returns a binary file (blob), not JSON
+      const blob = await response.blob()
+      const imageUrl = URL.createObjectURL(blob)
+      setImage(imageUrl)
       
     } catch (error) {
       console.error("Error:", error)
@@ -64,6 +62,17 @@ function TextToImage() {
           placeholder="Enter your prompt here..."
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
+        />
+      </div>
+      <div className="input-group">
+        <label htmlFor="t2i-steps">Steps:</label>
+        <input 
+          type="number" 
+          id="t2i-steps" 
+          value={steps}
+          onChange={(e) => setSteps(e.target.value)}
+          min="1"
+          max="50"
         />
       </div>
       <button 

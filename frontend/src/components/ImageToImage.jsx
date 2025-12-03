@@ -30,10 +30,10 @@ function ImageToImage() {
       const base64File = reader.result.split(',')[1]
 
       try {
-        const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+        const backendUrl = import.meta.env.VITE_API_BASE;
 
         /*
-        const response = await fetch(`${backendUrl}/image/edit`, {
+        const response = await fetch(`${backendUrl}/api/image/edit`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 

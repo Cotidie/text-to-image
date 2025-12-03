@@ -7,11 +7,6 @@ RUN npm install
 
 COPY . .
 
-ARG API_BASE
-ENV API_BASE=$API_BASE
+VOLUME /app/dist
 
-RUN npm run build
-RUN npm install -g serve
-
-EXPOSE 3000
-CMD ["serve", "-s", "dist", "-l", "3000"]
+CMD ["npm", "run", "build"]
