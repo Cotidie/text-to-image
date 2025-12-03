@@ -15,9 +15,8 @@ function TextToImage() {
     setLoading(true)
     try {
       const backendUrl = import.meta.env.VITE_API_BASE;
-      console.log("Backend URL:", backendUrl);
       
-      const response = await fetch(`${backendUrl}/api/image/generate`, {
+      const response = await fetch(`${backendUrl}/image/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

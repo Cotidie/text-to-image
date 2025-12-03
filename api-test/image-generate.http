@@ -1,4 +1,4 @@
-POST http://www.makinteract.com/api/image/generate  
+POST https://www.makinteract.com/api/image/generate  
 Content-Type: application/json
 
 {
