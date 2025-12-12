@@ -1,7 +1,7 @@
 import io
 from flask import request, send_file
 from flask.views import MethodView
-from model.generator_text_to_image import TextToImageGenerator
+from model.generator import Generator
 import model.generator_option as Options
 from view.request.image.edit import EditImage
 
@@ -10,7 +10,7 @@ class EditImageAPI(MethodView):
     
     init_every_request = False
 
-    def __init__(self, generator: TextToImageGenerator):
+    def __init__(self, generator: Generator):
         super().__init__()
         self.generator = generator
 

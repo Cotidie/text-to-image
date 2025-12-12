@@ -2,11 +2,10 @@ from diffusers import AutoPipelineForText2Image
 from PIL.Image import Image
 from model.generator_option import GenerateParameter, GenerateOption 
 from model.pipeline_option import PipelineParameter, PipelineOption
-from model.device import Device
+from model.device import Device, DeviceType
 from model.model import Model
-from enums.device_type import DeviceType
 
-class TextToImageGenerator:
+class Generator:
     """Class for handling image generation with Stable Diffusion model."""
 
     def __init__(self, model: Model, device: Device):
@@ -69,9 +68,9 @@ class TextToImageGenerator:
         if self.pipe is not None:
             self.pipe = self.pipe.to("cpu")
 
-    def load_to_device(self, device: DeviceType):
+    def load_to_device(self):
         if self.pipe is not None:
-            self.pipe = self.pipe.to(device.value)
+            self.pipe = self.pipe.to(self.device.type.value)
     
     def _apply_pipeline_options(self, params: PipelineParameter):
         if params.attention_slicing:

@@ -1,6 +1,5 @@
 import torch
-from model.device import Device
-from enums import DeviceType
+from model.device import Device, DeviceType
 
 
 class DeviceDetector:

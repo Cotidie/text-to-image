@@ -1,4 +1,4 @@
 from .device import Device
-from .generator_text_to_image import TextToImageGenerator
+from .generator import Generator
 from .generator_option import GenerateOption, GenerateParameter
-from .model import Model
+from .model import Model, LoadType

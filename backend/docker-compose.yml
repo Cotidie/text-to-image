@@ -31,6 +31,16 @@ services:
               capabilities: [gpu]
     profiles: ["nvidia"]
 
+  nvidia-test:
+    extends: nvidia
+    container_name: server-image-generation-test
+    volumes:
+      - .:/app
+    command: /bin/bash
+    stdin_open: true
+    tty: true
+    profiles: ["nvidia-test"]
+
   amd:
     extends: base
     image: makelab/backend:image-generation-amd
@@ -40,6 +50,9 @@ services:
       args:
         BASE_IMAGE: rocm/pytorch:rocm7.1_ubuntu24.04_py3.12_pytorch_release_2.8.0
     container_name: server-image-generation
+    environment:
+      - OC_ENABLE_PRE_VEGA=1
+      - AMD_VISIBLE_DEVICES=all
     devices:
       - /dev/dri:/dev/dri
       - /dev/kfd:/dev/kfd

@@ -1,7 +1,7 @@
 
 from dataclasses import dataclass
 from typing import Callable
-from enums import DeviceType
+from model.device import DeviceType
 
 @dataclass    
 class PipelineParameter:
@@ -21,10 +21,4 @@ def with_attention_slicing(enabled: bool) -> PipelineOption:
     """Enable or disable attention slicing for the pipeline"""
     def apply(params: PipelineParameter):
         params.attention_slicing = enabled
-    return apply
-
-def with_load_to_device(device: DeviceType) -> PipelineOption:
-    """Set the device to load the pipeline onto"""
-    def apply(params: PipelineParameter):
-        params.device = device
     return apply

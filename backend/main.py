@@ -3,7 +3,7 @@ import os
 from flask import Flask
 
 from config import Config, ConfigBuilder
-from model.generator_text_to_image import TextToImageGenerator
+from model.generator import Generator
 import model.pipeline_option as PipelineOption
 from controller import ImageController, HealthController
 
@@ -11,7 +11,7 @@ def create_app(config: Config) -> Flask:
     """Create and configure Flask application."""
     app = Flask(__name__)
 
-    generator = TextToImageGenerator(config.model, config.device)
+    generator = Generator(config.model, config.device)
     generator.prepare(
         PipelineOption.with_cpu_offload(False),
         PipelineOption.with_attention_slicing(True),
