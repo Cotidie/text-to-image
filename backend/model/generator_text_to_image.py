@@ -6,7 +6,7 @@ from model.device import Device
 from model.model import Model
 from enums.device_type import DeviceType
 
-class ImageGenerator:
+class TextToImageGenerator:
     """Class for handling image generation with Stable Diffusion model."""
 
     def __init__(self, model: Model, device: Device):
@@ -64,6 +64,14 @@ class ImageGenerator:
             width=params.width,
             height=params.height
         ).images[0]
+    
+    def unload_to_cpu(self):
+        if self.pipe is not None:
+            self.pipe = self.pipe.to("cpu")
+
+    def load_to_device(self, device: DeviceType):
+        if self.pipe is not None:
+            self.pipe = self.pipe.to(device.value)
     
     def _apply_pipeline_options(self, params: PipelineParameter):
         if params.attention_slicing:

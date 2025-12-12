@@ -1,5 +1,5 @@
 from flask import Blueprint
-from model.generator import ImageGenerator
+from model.generator_text_to_image import TextToImageGenerator
 
 from .generate import GenerateImageAPI
 from .edit import EditImageAPI
@@ -9,7 +9,7 @@ class ImageController:
 
     PREFIX = "/image"
     
-    def __init__(self, generator: ImageGenerator):
+    def __init__(self, generator: TextToImageGenerator):
         self.blueprint = Blueprint('image', __name__, url_prefix=self.PREFIX)
         self.generator = generator
 

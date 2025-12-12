@@ -5,8 +5,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY . .
-
-VOLUME /app/dist
+VOLUME /app
 
 CMD ["npm", "run", "build"]
