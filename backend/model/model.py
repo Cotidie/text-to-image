@@ -1,10 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-
-class LoadType(str, Enum):
-    LOCAL = "local"
-    REMOTE = "remote"
-    NONE = "none"
+from enums.load_type import LoadType
 
 @dataclass
 class Model:

@@ -12,8 +12,9 @@ MODEL_PATH = "/etc/model"
 def test_pipeline_switch():
     from model.editor import Editor
     from model.generator import Generator
-    from model.model import Model, LoadType
+    from model.model import Model
     from model.generator_option import with_steps
+    from enums.load_type import LoadType
     from enums.device_type import DeviceType
 
     # Initialize generator
