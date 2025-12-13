@@ -1,8 +1,8 @@
 import io
 from flask import request, send_file
 from flask.views import MethodView
-from model.generator import Generator
-import model.generator_option as Options
+from model.editor import Editor
+import model.editor_option as Options
 from view.request.image.edit import EditImage
 
 class EditImageAPI(MethodView):
@@ -10,17 +10,17 @@ class EditImageAPI(MethodView):
     
     init_every_request = False
 
-    def __init__(self, generator: Generator):
+    def __init__(self, editor: Editor):
         super().__init__()
-        self.generator = generator
+        self.editor = editor
 
     def post(self):
-        data = EditImage.from_request(request)
+        data = EditImage(request)
         data.validate()
 
-        generated_image = self.generator.edit(
-            data.prompt,
+        generated_image = self.editor.edit(
             data.image,
+            data.prompt,
             Options.with_steps(data.steps),
             Options.with_strength(data.strength)
         )

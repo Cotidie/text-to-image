@@ -1,5 +1,5 @@
 import torch
-from model.device import Device, DeviceType
+from model.device import Device
 
 
 class DeviceDetector:
@@ -10,13 +10,13 @@ class DeviceDetector:
         """Detect the available computation device."""
         if torch.cuda.is_available():
             print("✅ Detected CUDA (NVIDIA GPU)")
-            return Device(type=DeviceType.CUDA, dtype=torch.float16)
+            return Device.CUDA
         
         elif torch.backends.mps.is_available():
             print("✅ Detected MPS (Apple Silicon)")
-            return Device(type=DeviceType.MPS, dtype=torch.float16)
+            return Device.MPS
         
         else:
             print("⚠️ No GPU detected, using CPU (inference will be slow)")
-            return Device(type=DeviceType.CPU, dtype=torch.float32)
+            return Device.CPU
     

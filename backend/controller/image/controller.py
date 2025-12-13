@@ -1,4 +1,5 @@
 from flask import Blueprint
+from model.editor import Editor
 from model.generator import Generator
 
 from .generate import GenerateImageAPI
@@ -9,10 +10,11 @@ class ImageController:
 
     PREFIX = "/image"
     
-    def __init__(self, generator: Generator):
+    def __init__(self, generator: Generator, editor: Editor):
         self.blueprint = Blueprint('image', __name__, url_prefix=self.PREFIX)
         self.generator = generator
-
+        self.editor = editor
+    
         self._register_routes()
 
     def get_blueprint(self):
@@ -22,7 +24,7 @@ class ImageController:
         self.blueprint.add_url_rule(
             '/generate',
             view_func=GenerateImageAPI.as_view(
-                '/image/generate',
+                'generate-image',
                 generator=self.generator
             ),
             methods=['POST']
@@ -30,8 +32,8 @@ class ImageController:
         self.blueprint.add_url_rule(
             '/edit',
             view_func=EditImageAPI.as_view(
-                '/image/edit',
-                generator=self.generator
+                'edit-image',
+                editor=self.editor
             ),
             methods=['POST']
         )

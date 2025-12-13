@@ -2,7 +2,7 @@ from diffusers import AutoPipelineForText2Image
 from PIL.Image import Image
 from model.generator_option import GenerateParameter, GenerateOption 
 from model.pipeline_option import PipelineParameter, PipelineOption
-from model.device import Device, DeviceType
+from model.device import Device
 from model.model import Model
 
 class Generator:
@@ -15,9 +15,13 @@ class Generator:
 
     def prepare(self, *options: PipelineOption):
         """Prepare the generator with a new model and device."""
+        dtype = torch.float16
+        if self.device == Device.CPU:
+            dtype = torch.float32
+
         self.pipe = AutoPipelineForText2Image.from_pretrained(
             self.model.path,
-            torch_dtype=self.device.dtype,
+            torch_dtype=dtype,
             use_safetensors=True,
         )
 
@@ -79,7 +83,7 @@ class Generator:
         if params.cpu_offload:
             print("✅ CPU offload enabled") 
             self.pipe.enable_model_cpu_offload()
-        if params.device != DeviceType.NONE:
+        if params.device != Device.NONE:
             print("✅ loading pipeline to device:", params.device.value)
             self.pipe = self.pipe.to(params.device.value)
         

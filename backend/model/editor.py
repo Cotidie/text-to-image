@@ -2,7 +2,7 @@ from diffusers import AutoPipelineForImage2Image
 from PIL.Image import Image
 from model.editor_option import EditOption, EditParameter
 from model.pipeline_option import PipelineParameter, PipelineOption
-from model.device import Device, DeviceType
+from model.device import Device
 from model.model import Model
 
 class Editor:
@@ -15,9 +15,13 @@ class Editor:
 
     def prepare(self, *options: PipelineOption):
         """Prepare the generator with a new model and device."""
+        dtype = torch.float16
+        if self.device == Device.CPU:
+            dtype = torch.float32
+
         self.pipe = AutoPipelineForImage2Image.from_pretrained(
             self.model.path,
-            torch_dtype=self.device.dtype,
+            torch_dtype=dtype,
             use_safetensors=True,
         )
 
@@ -75,7 +79,7 @@ class Editor:
 
     def load_to_device(self):
         if self.pipe is not None:
-            self.pipe = self.pipe.to(self.device.type.value)
+            self.pipe = self.pipe.to(self.device.value)
     
     def _apply_pipeline_options(self, params: PipelineParameter):
         if params.attention_slicing:
@@ -84,7 +88,7 @@ class Editor:
         if params.cpu_offload:
             print("✅ CPU offload enabled") 
             self.pipe.enable_model_cpu_offload()
-        if params.device != DeviceType.NONE:
+        if params.device != Device.NONE:
             print("✅ loading pipeline to device:", params.device.value)
             self.pipe = self.pipe.to(params.device.value)
         

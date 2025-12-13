@@ -17,8 +17,10 @@ def create_app(config: Config) -> Flask:
         PipelineOption.with_attention_slicing(True),
         PipelineOption.with_load_to_device(config.device.type),
     )
+    editor = Editor(config.model, config.device)
+    editor.prepare_from_pipe(generator.pipe)
 
-    image_controller = ImageController(generator)
+    image_controller = ImageController(generator, editor)
     health_controller = HealthController()
 
     app.register_blueprint(image_controller.get_blueprint(), url_prefix='/api/image')

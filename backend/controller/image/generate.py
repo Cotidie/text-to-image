@@ -15,7 +15,7 @@ class GenerateImageAPI(MethodView):
         self.generator = generator 
 
     def post(self):
-        data = GenerateImage.from_request(request)
+        data = GenerateImage(request)
         data.validate()
 
         image = self.generator.generate(
