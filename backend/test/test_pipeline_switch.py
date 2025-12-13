@@ -13,22 +13,22 @@ def test_pipeline_switch():
     from model.editor import Editor
     from model.generator import Generator
     from model.model import Model, LoadType
-    from model.device import Device
     from model.generator_option import with_steps
+    from enums.device_type import DeviceType
 
     # Initialize generator
     generator = Generator(
         Model(type=LoadType.LOCAL, path=MODEL_PATH),
-        device=Device.CUDA
+        device=DeviceType.CUDA
     )
     editor = Editor(
         Model(type=LoadType.LOCAL, path=MODEL_PATH),
-        device=Device.CUDA
+        device=DeviceType.CUDA
     )
     generator.prepare(
         with_cpu_offload(True),
         with_attention_slicing(True),
-        with_load_to_device(Device.CUDA)
+        with_load_to_device(DeviceType.CUDA)
     )
     editor.prepare_from_pipe(generator.pipe)
 

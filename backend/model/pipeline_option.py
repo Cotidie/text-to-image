@@ -1,13 +1,13 @@
 
 from dataclasses import dataclass
 from typing import Callable
-from model.device import Device
+from enums.device_type import DeviceType
 
 @dataclass    
 class PipelineParameter:
     cpu_offload: bool = False
     attention_slicing: bool = False
-    device: Device = Device.NONE
+    device: DeviceType = DeviceType.NONE
 
 PipelineOption = Callable[[PipelineParameter], None]
 
@@ -23,7 +23,7 @@ def with_attention_slicing(enabled: bool) -> PipelineOption:
         params.attention_slicing = enabled
     return apply
 
-def with_load_to_device(device: Device) -> PipelineOption:
+def with_load_to_device(device: DeviceType) -> PipelineOption:
     """Set the device for loading the pipeline"""
     def apply(params: PipelineParameter):
         params.device = device

@@ -1,7 +1,8 @@
 import os
 from dataclasses import dataclass
-from model.device import Device
-from model.model import LoadType, Model
+from enums.device_type import DeviceType
+from enums.load_type import LoadType
+from model.model import Model
 from huggingface_hub import HfApi
 from utils import DeviceDetector
 
@@ -9,7 +10,7 @@ from utils import DeviceDetector
 class Config:
     """Configuration settings for the image generation service."""
     model: Model
-    device: Device
+    device: DeviceType
 
     port: int = 5555
 

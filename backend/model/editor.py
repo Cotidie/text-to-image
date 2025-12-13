@@ -2,13 +2,13 @@ from diffusers import AutoPipelineForImage2Image
 from PIL.Image import Image
 from model.editor_option import EditOption, EditParameter
 from model.pipeline_option import PipelineParameter, PipelineOption
-from model.device import Device
 from model.model import Model
+from enums.device_type import DeviceType
 
 class Editor:
     """Class for handling image editor with Stable Diffusion model."""
 
-    def __init__(self, model: Model, device: Device):
+    def __init__(self, model: Model, device: DeviceType):
         self.model = model
         self.device = device
         self.pipe = None
@@ -16,7 +16,7 @@ class Editor:
     def prepare(self, *options: PipelineOption):
         """Prepare the generator with a new model and device."""
         dtype = torch.float16
-        if self.device == Device.CPU:
+        if self.device == DeviceType.CPU:
             dtype = torch.float32
 
         self.pipe = AutoPipelineForImage2Image.from_pretrained(
@@ -88,7 +88,7 @@ class Editor:
         if params.cpu_offload:
             print("✅ CPU offload enabled") 
             self.pipe.enable_model_cpu_offload()
-        if params.device != Device.NONE:
+        if params.device != DeviceType.NONE:
             print("✅ loading pipeline to device:", params.device.value)
             self.pipe = self.pipe.to(params.device.value)
         
