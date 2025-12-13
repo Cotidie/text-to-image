@@ -4,6 +4,7 @@ from flask import Flask
 
 from config import Config, ConfigBuilder
 from model.generator import Generator
+from model.editor import Editor
 import model.pipeline_option as PipelineOption
 from controller import ImageController, HealthController
 
@@ -15,7 +16,7 @@ def create_app(config: Config) -> Flask:
     generator.prepare(
         PipelineOption.with_cpu_offload(False),
         PipelineOption.with_attention_slicing(True),
-        PipelineOption.with_load_to_device(config.device.type),
+        PipelineOption.with_load_to_device(config.device),
     )
     editor = Editor(config.model, config.device)
     editor.prepare_from_pipe(generator.pipe)

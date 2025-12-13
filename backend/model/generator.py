@@ -4,6 +4,7 @@ from model.generator_option import GenerateParameter, GenerateOption
 from model.pipeline_option import PipelineParameter, PipelineOption
 from model.device import Device
 from model.model import Model
+import torch
 
 class Generator:
     """Class for handling image generation with Stable Diffusion model."""
