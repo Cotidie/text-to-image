@@ -1,6 +1,7 @@
 """Image response implementations."""
 
 import base64
+import io
 from PIL import Image
 from dataclasses import dataclass
 
@@ -22,8 +23,10 @@ class GenerateImageResponse(Serializable):
     format: str = "PNG"
 
     def to_dict(self) -> dict:
+        buffered = io.BytesIO()
+        self.image.save(buffered, format=self.format)
         return {
-            "image": base64.b64encode(self.image.tobytes()).decode('utf-8'),
+            "image": base64.b64encode(buffered.getvalue()).decode('utf-8'),
             "format": self.format,
             "time": self.time,
         }
