@@ -7,4 +7,6 @@ RUN npm install
 
 VOLUME /app
 
+COPY . .
+
 CMD ["npm", "run", "build"]

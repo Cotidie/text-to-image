@@ -4,6 +4,7 @@ function TextToImage() {
   const [prompt, setPrompt] = useState('')
   const [steps, setSteps] = useState(2)
   const [image, setImage] = useState(null)
+  const [generationTime, setGenerationTime] = useState(null)
   const [loading, setLoading] = useState(false)
 
   const handleGenerate = async () => {
@@ -13,6 +14,7 @@ function TextToImage() {
     }
 
     setLoading(true)
+    setGenerationTime(null)
     try {
       const backendUrl = import.meta.env.VITE_API_BASE;
       console.log("Backend FULL URL:", `${backendUrl}/image/generate`);
@@ -28,10 +30,10 @@ function TextToImage() {
       
       if (!response.ok) throw new Error('Network response was not ok')
       
-      // Backend returns a binary file (blob), not JSON
-      const blob = await response.blob()
-      const imageUrl = URL.createObjectURL(blob)
+      const data = await response.json()
+      const imageUrl = `data:image/png;base64,${data.image}`
       setImage(imageUrl)
+      setGenerationTime(data.time)
       
     } catch (error) {
       console.error("Error:", error)
@@ -87,6 +89,7 @@ function TextToImage() {
         <div className="result-container">
           <h4>Result:</h4>
           <img src={image} alt="Generated" />
+          {generationTime && <p>Generation time: {Number(generationTime).toFixed(2)}s</p>}
           <br />
           <button className="btn-download" onClick={handleDownload}>
             Download Image
