@@ -26,7 +26,12 @@ function App() {
       </div>
 
       <div className="tab-content">
-        {activeTab === 'text-to-image' ? <TextToImage /> : <ImageToImage />}
+        <div style={{ display: activeTab === 'text-to-image' ? 'block' : 'none' }}>
+          <TextToImage />
+        </div>
+        <div style={{ display: activeTab === 'image-to-image' ? 'block' : 'none' }}>
+          <ImageToImage />
+        </div>
       </div>
     </div>
   )
