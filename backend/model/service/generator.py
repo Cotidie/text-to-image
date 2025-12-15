@@ -58,7 +58,7 @@ class Generator:
             Generated PIL Image
         """
         print(f"Generating image for prompt: {prompt}")
-        start = time.time()
+        timer_start = time.time()
 
         params = GenerateParameter(prompt=prompt)
         for option in options:
@@ -72,7 +72,8 @@ class Generator:
             height=params.height
         ).images[0]
 
-        return GeneratedImage(image=image, time=time.time() - start)
+        timer_end = time.time()
+        return GeneratedImage(image=image, time=timer_end - timer_start)
     
     def unload_to_cpu(self):
         if self.pipe is not None:

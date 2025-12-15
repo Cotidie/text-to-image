@@ -38,12 +38,12 @@ def test_pipeline_switch():
         with_steps(10),
     )
     generated.image.convert("RGB").save("generated_image.png")
-    edited_image = editor.edit(
+    edited = editor.edit(
         generated.image,
         "Add a red bow tie to the cat",
         with_steps(10),
     )
-    edited_image.convert("RGB").save("edited_image.png")
+    edited.image.convert("RGB").save("edited_image.png")
 
 if __name__ == "__main__":
     test_pipeline_switch()

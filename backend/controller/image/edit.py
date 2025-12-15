@@ -18,7 +18,7 @@ class EditImageAPI(MethodView):
         data = EditImage(request)
         data.validate()
 
-        generated_image = self.editor.edit(
+        generated = self.editor.edit(
             data.image,
             data.prompt,
             Options.with_steps(data.steps),
@@ -26,7 +26,7 @@ class EditImageAPI(MethodView):
         )
 
         image_io = io.BytesIO()
-        generated_image.save(image_io, 'PNG', quality=95)
+        generated.image.save(image_io, 'PNG', quality=95)
         image_io.seek(0)
         
         return send_file(

@@ -1,5 +1,8 @@
+import time
+
 from diffusers import AutoPipelineForImage2Image
 from PIL.Image import Image
+from model.entity.edited_image import EditedImage
 from .editor_option import EditOption, EditParameter
 from .pipeline_option import PipelineParameter, PipelineOption
 from model.entity.model import Model
@@ -41,7 +44,7 @@ class Editor:
             option(params)
         self._apply_pipeline_options(params)
 
-    def edit(self, image: Image, prompt: str, *options: EditOption) -> Image:
+    def edit(self, image: Image, prompt: str, *options: EditOption) -> EditedImage:
         """
         Generate image from text prompt with optional parameters.
         
@@ -54,6 +57,7 @@ class Editor:
             Generated PIL Image
         """
         print(f"Generating image for prompt: {prompt}")
+        timer_start = time.time()
 
         image = image.convert("RGB")
         params = EditParameter(prompt=prompt)
@@ -63,7 +67,7 @@ class Editor:
         if params.steps * params.strength < 1:
             raise ValueError("The product of steps and strength must be at least 1.")
             
-        return self.pipe(
+        image = self.pipe(
             image = image,
             prompt=params.prompt,
             num_inference_steps=params.steps,
@@ -72,6 +76,9 @@ class Editor:
             width=params.width,
             height=params.height
         ).images[0]
+
+        timer_end = time.time()
+        return EditedImage(image=image, time=timer_end - timer_start)
     
     def unload_to_cpu(self):
         if self.pipe is not None:
