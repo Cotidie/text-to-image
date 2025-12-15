@@ -9,7 +9,7 @@ import useImageGeneration from '../hooks/useImageGeneration'
 function ImageToImage() {
   const [prompt, setPrompt] = useState('')
   const [steps, setSteps] = useState(4)
-  const [strength, setStrength] = useState(0.75)
+  const [strength, setStrength] = useState(0.72)
   const [sourceImage, setSourceImage] = useState(null)
   
   const { 
