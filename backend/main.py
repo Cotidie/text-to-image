@@ -3,9 +3,9 @@ import os
 from flask import Flask
 
 from config import Config, ConfigBuilder
-from model.generator import Generator
-from model.editor import Editor
-import model.pipeline_option as PipelineOption
+from model.service.generator import Generator
+from model.service.editor import Editor
+import model.service.pipeline_option as PipelineOption
 from controller import ImageController, HealthController
 
 def create_app(config: Config) -> Flask:

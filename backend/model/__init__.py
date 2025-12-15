@@ -1,3 +1,3 @@
-from .generator import Generator
-from .generator_option import GenerateOption, GenerateParameter
-from .model import Model
+from .service.generator import Generator
+from .service.generator_option import GenerateOption, GenerateParameter
+from .entity.model import Model

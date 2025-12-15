@@ -1,8 +1,8 @@
 from diffusers import AutoPipelineForImage2Image
 from PIL.Image import Image
-from model.editor_option import EditOption, EditParameter
-from model.pipeline_option import PipelineParameter, PipelineOption
-from model.model import Model
+from .editor_option import EditOption, EditParameter
+from .pipeline_option import PipelineParameter, PipelineOption
+from model.entity.model import Model
 from enums.device_type import DeviceType
 
 class Editor:

@@ -1,8 +1,10 @@
 from diffusers import AutoPipelineForText2Image
 from PIL.Image import Image
-from model.generator_option import GenerateParameter, GenerateOption 
-from model.pipeline_option import PipelineParameter, PipelineOption
-from model.model import Model
+import time
+from model.entity.generated_image import GeneratedImage
+from .generator_option import GenerateParameter, GenerateOption 
+from .pipeline_option import PipelineParameter, PipelineOption
+from model.entity.model import Model
 from enums.device_type import DeviceType
 import torch
 
@@ -44,7 +46,7 @@ class Generator:
 
         print("Pipelines re-initialized with custom pipeline.")
 
-    def generate(self, prompt: str, *options: GenerateOption) -> Image:
+    def generate(self, prompt: str, *options: GenerateOption) -> GeneratedImage:
         """
         Generate image from text prompt with optional parameters.
         
@@ -56,18 +58,21 @@ class Generator:
             Generated PIL Image
         """
         print(f"Generating image for prompt: {prompt}")
+        start = time.time()
 
         params = GenerateParameter(prompt=prompt)
         for option in options:
             option(params)
             
-        return self.pipe(
+        image = self.pipe(
             prompt=params.prompt,
             num_inference_steps=params.steps,
             guidance_scale=0.0,
             width=params.width,
             height=params.height
         ).images[0]
+
+        return GeneratedImage(image=image, time=time.time() - start)
     
     def unload_to_cpu(self):
         if self.pipe is not None:

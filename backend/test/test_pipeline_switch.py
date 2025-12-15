@@ -4,16 +4,16 @@ import torch
 backend_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(backend_root)
 
-from model.pipeline_option import *
+from model.service.pipeline_option import *
 
 MODEL_PATH = "/etc/model"
 
 
 def test_pipeline_switch():
-    from model.editor import Editor
-    from model.generator import Generator
-    from model.model import Model
-    from model.generator_option import with_steps
+    from model.service.editor import Editor
+    from model.service.generator import Generator
+    from model.entity.model import Model
+    from model.service.generator_option import with_steps
     from enums.load_type import LoadType
     from enums.device_type import DeviceType
 
@@ -33,13 +33,13 @@ def test_pipeline_switch():
     )
     editor.prepare_from_pipe(generator.pipe)
 
-    generated_image = generator.generate(
+    generated = generator.generate(
         "A cute cat staring at a front door",
         with_steps(10),
     )
-    generated_image.convert("RGB").save("generated_image.png")
+    generated.image.convert("RGB").save("generated_image.png")
     edited_image = editor.edit(
-        generated_image,
+        generated.image,
         "Add a red bow tie to the cat",
         with_steps(10),
     )

@@ -1,8 +1,8 @@
 import io
 from flask import request, send_file
 from flask.views import MethodView
-from model.editor import Editor
-import model.editor_option as Options
+from model.service.editor import Editor
+import model.service.editor_option as Options
 from view.request.image.edit import EditImage
 
 class EditImageAPI(MethodView):

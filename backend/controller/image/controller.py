@@ -1,6 +1,6 @@
 from flask import Blueprint
-from model.editor import Editor
-from model.generator import Generator
+from model.service.editor import Editor
+from model.service.generator import Generator
 
 from .generate import GenerateImageAPI
 from .edit import EditImageAPI
