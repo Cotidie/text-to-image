@@ -118,7 +118,7 @@ curl -X POST http://www.makinteract.com/api/image/generate \
   -H "Content-Type: application/json" \
   -d '{
     "prompt": "A futuristic city skyline at sunset",
-    "steps": 4,
+    "steps": 4
   }' \
   | jq -r '.image' | base64 -d > generated_image.png
 ```
@@ -158,7 +158,7 @@ echo -n '"}' >> payload.json
 
 # 2. Send the request using the file (@payload.json)
 curl -X POST http://www.makinteract.com/api/image/edit \
-  -H "Content-Type: application/json"
--d @payload.json
+-H "Content-Type: application/json" \
+-d @payload.json \
 | jq -r '.image' | base64 -d > edited_image.png
 ```
