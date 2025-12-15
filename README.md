@@ -6,6 +6,7 @@ A simple Flask REST API for generating images from text prompts using Stability 
 - image generation from text prompts
 - Docker containerized deployment
 - MVC architecture with Flask blueprints
+- NVIDIA and AMD GPU support inside Docker
 
 ## Environment
 - **Host OS**: Ubuntu 24.04
@@ -19,10 +20,12 @@ A simple Flask REST API for generating images from text prompts using Stability 
 ![mvc-pattern](.images/readme-mvc-pattern.png)  
 ```
 backend/
-├─ controller/          # Flask blueprints & route handlers
+├─  controller/          # Flask blueprints & route handlers
 ├─── image/               # API definitions for /image endpoint group
 ├─── ...
 ├─ model/               # Business/Domain logic
+├─── entity/              # Data classes in domain layer
+├─── service/             # Service classes in domain layer
 ├─ view/                # Request/response models
 ├─ enums/               
 ├─ utils/               # system, infra level utility classes
@@ -30,68 +33,87 @@ backend/
 └─ config.py            # Configuration & model enums
 ```
 
+## Prerequisites
+- NVIDIA or AMD GPU
+  - [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) for NVIDIA GPU
+  - [AMD Container Toolkit](https://github.com/ROCm/container-toolkit) for AMD GPU
+- Docker
+
 ## Quick Start
-1. Install NVIDIA container toolkit
+### Backend
 
-| https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
 
-2. Download a model package (folder) containing .safetensors 
-  - Put the model folder into `models/`
+### Frontend
 
-| ex) https://huggingface.co/stabilityai/sd-turbo/tree/main
-
-3. Build a docker
-```bash
-docker build -t text-to-image:local .
-```
-
-4. Configure environment variables
-  - edit `.env` to choose a model to run
-    - `DEFAULT_MODEL=/app/models/sd-turbo`
-
-5. Run docker-compose
-```bash
-docker compose up -d
-```
-
-6. Now your server runs on the port on `.env`
 
 ## API Endpoints
-
 ### Generate Image
-**POST** `/image/generate`
+Generates a new image from scratch based on a provided text prompt.
 
-Request body:
+#### Request
 ```json
 {
-  "prompt": "a cat on a skateboard",
-  "width": 512,
-  "height": 512,
-  "steps": 8
+  "prompt": "str (Required) - The text description of the image to generate.",
+  "steps": "int (Optional, default: 8) - Number of inference steps. Higher values may improve quality.",
+  "format": "str (Optional, default: 'png') - Output image format (e.g., 'png', 'jpeg')."
 }
 ```
 
-Parameters:
-- `prompt` (required): Text description of the image
-- `width` (optional): Image width in pixels (default: 512)
-- `height` (optional): Image height in pixels (default: 512)
-- `steps` (optional): Number of inference steps (default: 8)
+#### Response
+```json
+{
+  "image": "str - Base64 encoded string of the generated image.",
+  "time": "float - Time taken to generate the image in seconds.",
+  "format": "str - The format of the returned image (e.g., 'PNG')."
+}
+```
 
-Example:
-```bash
-curl -X POST http://localhost:5000/image/generate \
+#### Example
+```json
+curl -X POST http://www.makinteract.com/api/image/generate \
   -H "Content-Type: application/json" \
-  -d '{"prompt": "a sunset over mountains", "width": 768, "height": 512, "steps": 10}' \
-  --output image.png
+  -d '{
+    "prompt": "A futuristic city skyline at sunset",
+    "steps": 20,
+  }' \
+  | jq -r '.image' | base64 -d > generated_image.png
 ```
 
-### Health Check
-**GET** `/ping`
 
-```bash
-curl http://localhost:5000/ping
-# Returns: "pong"
+### Edit Image
+Modifies an existing source image based on a text prompt. 
+
+#### Request
+```json
+{
+  "image": "str (Required) - Base64 encoded string of the source image to edit.",
+  "prompt": "str (Required) - The text description for the edit.",
+  "steps": "int (Optional) - Number of inference steps.",
+  "strength": "float (Optional) - Higher values mean more changes(0.0 to 1.0)",
+  "format": "str (Optional) - Output image format."
+}
 ```
 
-## License
-Educational purposes.
+##### Response
+```json
+{
+  "image": "str - Base64 encoded string of the edited image.",
+  "time": "float - Time taken to edit the image in seconds.",
+  "format": "str - The format of the returned image."
+}
+```
+
+#### Example
+```json
+IMAGE_DATA=$(base64 -w 0 source_image.png)
+
+curl -X POST http://www.makinteract.com/api/image/edit \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"prompt\": \"Make it snowy\",
+    \"image\": \"$IMAGE_DATA\",
+    \"steps\": 10,
+    \"strength\": 0.8
+  }" \
+  | jq -r '.image' | base64 -d > edited_image.png
+```
