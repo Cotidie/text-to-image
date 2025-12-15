@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class Jsonifiable(ABC):
+class Serializable(ABC):
     @abstractmethod
     def to_dict(self) -> dict:
         """

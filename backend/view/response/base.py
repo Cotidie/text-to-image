@@ -1,9 +1,9 @@
 from typing import TypeVar, Generic
 from flask import jsonify
 
-from view.interface import Jsonifiable
+from view.interface import Serializable
 
-T = TypeVar('T', bound=Jsonifiable)
+T = TypeVar('T', bound=Serializable)
 
 class Response(Generic[T]):
     """

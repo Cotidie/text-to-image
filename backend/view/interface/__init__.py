@@ -1,7 +1,7 @@
-from .jsonifiable import Jsonifiable
+from .serializable import Serializable
 from .validatable import Validatable
 
 __all__ = [
-    "Jsonifiable",
+    "Serializable",
     "Validatable",
 ]
