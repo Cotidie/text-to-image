@@ -7,11 +7,9 @@ from .edit import EditImageAPI
 
 class ImageController:
     """Controller for /image endpoint."""
-
-    PREFIX = "/image"
     
     def __init__(self, generator: Generator, editor: Editor):
-        self.blueprint = Blueprint('image', __name__, url_prefix=self.PREFIX)
+        self.blueprint = Blueprint('image', __name__)
         self.generator = generator
         self.editor = editor
     

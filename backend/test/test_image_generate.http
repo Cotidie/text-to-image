@@ -1,0 +1,9 @@
+POST http://localhost:5555/api/image/generate  
+Content-Type: application/json
+
+{
+  "prompt": "mutated korean man, with glasses, bowl cut hairstyle, black hoodie, gray pants, with a baseball in his hand, photorealistic",
+  "width": 512,
+  "height": 512,
+  "steps": 4
+}

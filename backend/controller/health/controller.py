@@ -4,12 +4,10 @@ from .ping import PingAPI
 class HealthController:
     """Controller for health check endpoints."""
 
-    PREFIX = "/health"
-
     def __init__(self):
         self.api_ping = PingAPI()
 
-        self.blueprint = Blueprint('healthcheck', __name__, url_prefix=self.PREFIX)
+        self.blueprint = Blueprint('healthcheck', __name__)
         self._register_routes()
 
     def _register_routes(self):

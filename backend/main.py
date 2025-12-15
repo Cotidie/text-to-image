@@ -32,11 +32,14 @@ def create_app(config: Config) -> Flask:
 
 def main():
     config = ConfigBuilder()\
-        .with_port(5555)\
         .with_env()\
         .build()
 
     app = create_app(config)
+
+    @app.route("/")
+    def index():
+        return "Hello, World!"
     
     print(f"Starting Text-to-Image Generation Server on port {config.port}...")
     print(f"Model: {config.model}")
