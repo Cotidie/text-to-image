@@ -12,15 +12,15 @@ A simple Flask REST API for generating images from text prompts using Stability 
 - **Host OS**: Ubuntu 24.04
 - **GPU**: NVIDIA RTX 4080 SUPER 16GB
 - **Python**: 3.11
-- **Library**: Flask, HuggingFace
-- **Models**: Stable Diffusion (SD-Turbo, SDXL-Turbo)
+- **Library**: Flask, HuggingFace, React, Vite
+- **Models**: Stable Diffusion (SDXL-Turbo)
 - **Container**: pytorch with CUDA support
 
 ## Project Structure
 ![mvc-pattern](.images/readme-mvc-pattern.png)  
 ```
 backend/
-├─  controller/          # Flask blueprints & route handlers
+├─ controller/          # Flask blueprints & route handlers
 ├─── image/               # API definitions for /image endpoint group
 ├─── ...
 ├─ model/               # Business/Domain logic
@@ -38,6 +38,8 @@ backend/
   - [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) for NVIDIA GPU
   - [AMD Container Toolkit](https://github.com/ROCm/container-toolkit) for AMD GPU
 - Docker
+- Stable Diffusion model files
+  - [StabilityAI/sdxl-turbo](https://huggingface.co/stabilityai/sdxl-turbo/tree/main)
 
 ## Quick Start
 ### Backend
@@ -93,6 +95,7 @@ Modifies an existing source image based on a text prompt.
   "format": "str (Optional) - Output image format."
 }
 ```
+⚠️ `curl` in CLI cannot handle such lengthy string for image. Use `.js` script or `.json` file instread.
 
 ##### Response
 ```json
