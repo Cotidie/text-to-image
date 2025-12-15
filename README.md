@@ -43,10 +43,52 @@ backend/
 
 ## Quick Start
 ### Backend
+1. clone this repository on **the server**
+2. Go to `backend` folder
+3. Edit .env file
+```bash
+vi .env
 
+# Model Configuration
+LOAD_TYPE = local                            # local or remote
+MODEL_NAME = sdxl-turbo                      # (optional) just identifier
+
+# EDIT HERE when LOAD_TYPE is local
+MODEL_PATH = /path/to/models/sdxl-turbo # entire model path for local
+
+# EDIT HERE when LOAD_TYPE is remote
+MODEL_REPO = StabilityAI/sdxl-3.0-turbo      # repository on Hugging Face
+
+# Server Configuration
+PORT=5555
+```
+
+4. Run docker compose depending on GPU vendor
+```bash
+cd backend
+
+docker compose --profile amd up --build -d    # for amd
+docker compose --profile nvidia up --build -d # for nvidia
+```
+
+5. Now the server runs on '<public IP>:5555'
 
 ### Frontend
+1. Clone this repository on your **local machine**
+2. Go to `frontend` folder
+3. Edit .env file to match public ip/domain
+```bash
+cd frontend
+vi .env
 
+VITE_API_TARGET=http://www.makinteract.com   # EDIT here for your public domain
+```
+4. Run a script for easy deployment
+```bash
+sudo chmod +x deploy.sh
+./deploy.sh
+```
+5. Now webpage runs on `www.makinteract.com`
 
 ## API Endpoints
 ### Generate Image
@@ -76,7 +118,7 @@ curl -X POST http://www.makinteract.com/api/image/generate \
   -H "Content-Type: application/json" \
   -d '{
     "prompt": "A futuristic city skyline at sunset",
-    "steps": 20,
+    "steps": 4,
   }' \
   | jq -r '.image' | base64 -d > generated_image.png
 ```
@@ -107,16 +149,16 @@ Modifies an existing source image based on a text prompt.
 ```
 
 #### Example
-```bash
-IMAGE_DATA=$(base64 -w 0 source_image.png)
 
+```bash
+# 1. Construct the JSON payload in a temporary file
+echo -n '{"prompt": "Make it snowy", "steps": 4, "strength": 0.75, "image": "' > payload.json
+base64 -w 0 source_image.png >> payload.json
+echo -n '"}' >> payload.json
+
+# 2. Send the request using the file (@payload.json)
 curl -X POST http://www.makinteract.com/api/image/edit \
-  -H "Content-Type: application/json" \
-  -d "{
-    \"prompt\": \"Make it snowy\",
-    \"image\": \"$IMAGE_DATA\",
-    \"steps\": 10,
-    \"strength\": 0.8
-  }" \
-  | jq -r '.image' | base64 -d > edited_image.png
+  -H "Content-Type: application/json"
+-d @payload.json
+| jq -r '.image' | base64 -d > edited_image.png
 ```
