@@ -69,7 +69,7 @@ Generates a new image from scratch based on a provided text prompt.
 ```
 
 #### Example
-```json
+```bash
 curl -X POST http://www.makinteract.com/api/image/generate \
   -H "Content-Type: application/json" \
   -d '{
@@ -104,7 +104,7 @@ Modifies an existing source image based on a text prompt.
 ```
 
 #### Example
-```json
+```bash
 IMAGE_DATA=$(base64 -w 0 source_image.png)
 
 curl -X POST http://www.makinteract.com/api/image/edit \
