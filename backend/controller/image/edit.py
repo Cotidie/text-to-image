@@ -3,7 +3,8 @@ from flask import request, send_file
 from flask.views import MethodView
 from model.service.editor import Editor
 import model.service.editor_option as Options
-from view.request.image.edit import EditImage
+from view.request.image.edit import EditImageRequest
+from view.response.image.edit import EditImageResponse
 
 class EditImageAPI(MethodView):
     """Handle image editing requests."""
@@ -15,8 +16,7 @@ class EditImageAPI(MethodView):
         self.editor = editor
 
     def post(self):
-        data = EditImage(request)
-        data.validate()
+        data = EditImageRequest(request)
 
         generated = self.editor.edit(
             data.image,
@@ -25,13 +25,7 @@ class EditImageAPI(MethodView):
             Options.with_strength(data.strength)
         )
 
-        image_io = io.BytesIO()
-        generated.image.save(image_io, 'PNG', quality=95)
-        image_io.seek(0)
+        response = EditImageResponse(generated.image, generated.time)
         
-        return send_file(
-            image_io,
-            mimetype='image/png',
-            as_attachment=False,
-            download_name='edited_image.png'
-        )
+        return response.to_dict()
+

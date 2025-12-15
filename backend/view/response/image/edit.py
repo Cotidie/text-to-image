@@ -1,9 +1,10 @@
 from dataclasses import dataclass
 from PIL.Image import Image
 from view.interface import Serializable
+import base64
 
 @dataclass
-class EditImage(Serializable):
+class EditImageResponse(Serializable):
     """
     Data payload for image editing endpoint
     

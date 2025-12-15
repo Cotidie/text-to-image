@@ -1,8 +1,8 @@
 """Response builders for the image generation API."""
 
 from .base import Response
-from .image.generate import GenerateImage
-from .image.edit import EditImage   
+from .image.generate import GenerateImageResponse
+from .image.edit import EditImageResponse   
 
 __all__ = [
     "Response",

@@ -1,5 +1,5 @@
-from .generate import GenerateImage
-from .edit import EditImage
+from .generate import GenerateImageResponse
+from .edit import EditImageResponse
 
 __all__ = [
     "GenerateImage",

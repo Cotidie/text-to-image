@@ -8,7 +8,7 @@ from view.interface import Serializable
 
 
 @dataclass
-class GenerateImage(Serializable):
+class GenerateImageResponse(Serializable):
     """
     Data payload for image generation endpoint
     

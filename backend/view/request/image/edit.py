@@ -4,20 +4,24 @@ from flask import Request
 from view.interface import Validatable
 from view.request.helper import parse_json_data
 from PIL.Image import Image
+import base64
+import io
 
-class EditImage(Validatable):
+class EditImageRequest(Validatable):
     """Request model for image editing."""
-
     def __init__(self, request: Request):
         data = parse_json_data(request)
-        self.image = data.get("image")
-        self.prompt = data.get("prompt", "")
-        self.format = data.get("format", "png")
-        self.steps = int(data.get("steps", 4))
-        self.strength = float(data.get("strength", 0.6))
+        self.raw_image: str = data.get("image", None)
+        self.image = Image.open(io.BytesIO(base64.b64decode(self.raw_image)))
+        self.prompt: str = data.get("prompt", "")
+        self.format: str = data.get("format", "png")
+        self.steps: int = int(data.get("steps", 4))
+        self.strength: float = float(data.get("strength", 0.6))
+        
+        self.validate()
 
     def validate(self) -> None:
-        if not self.image:
+        if not self.raw_image:
             raise ValueError("Image data cannot be empty.")
         if not self.prompt:
             raise ValueError("Prompt cannot be empty.")

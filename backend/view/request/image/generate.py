@@ -3,7 +3,7 @@ from flask import Request
 from view.interface import Validatable
 from view.request.helper import parse_json_data
 
-class GenerateImage(Validatable):
+class GenerateImageRequest(Validatable):
     """Request model for image generation."""
     
     def __init__(self, request: Request):
@@ -13,6 +13,8 @@ class GenerateImage(Validatable):
         self.width = int(data.get("width", 512))
         self.height = int(data.get("height", 512))
         self.steps = int(data.get("steps", 8))
+
+        self.validate()
 
     def validate(self) -> None:
         if not self.prompt:

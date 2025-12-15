@@ -3,7 +3,8 @@ from flask import request, send_file
 from flask.views import MethodView
 from model.service.generator import Generator
 import model.service.generator_option as Options
-from view.request.image.generate import GenerateImage
+from view.request.image.generate import GenerateImageRequest
+from view.response.image.generate import GenerateImageResponse
 
 class GenerateImageAPI(MethodView):
     """Handle image generation requests."""
@@ -15,8 +16,7 @@ class GenerateImageAPI(MethodView):
         self.generator = generator 
 
     def post(self):
-        data = GenerateImage(request)
-        data.validate()
+        data = GenerateImageRequest(request)
 
         generated = self.generator.generate(
             data.prompt,
@@ -24,13 +24,6 @@ class GenerateImageAPI(MethodView):
             Options.with_size(data.width, data.height),
         )
 
-        image_io = io.BytesIO()
-        generated.image.save(image_io, data.format, quality=100)
-        image_io.seek(0)
+        response = GenerateImageResponse(generated.image, generated.time)
         
-        return send_file(
-            image_io,
-            mimetype=f'image/{data.format}',
-            as_attachment=False,
-            download_name=f'generated_image.{data.format}'
-        )
+        return response.to_dict()
