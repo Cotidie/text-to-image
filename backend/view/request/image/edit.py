@@ -3,7 +3,7 @@ from typing import Optional
 from flask import Request
 from view.interface import Validatable
 from view.request.helper import parse_json_data
-from PIL.Image import Image
+import PIL.Image as Image
 import base64
 import io
 
